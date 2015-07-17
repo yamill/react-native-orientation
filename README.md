@@ -35,6 +35,12 @@ Orientation module adapted from @clavery.
 
 `removeOrientationListener(function)`
 
+## Functions
+
+`_orientationDidChange(orientation)`
+
+orientation can return either `LANDSCAPE` `PORTRAIT` `UNKNOWN`
+
 ## TODOS
 
 - [ ] Add some way to allow setting a preferred orientation on a screen by screen basis.
