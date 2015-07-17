@@ -1,6 +1,6 @@
 {
   "name": "react-native-orientation",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Listen to device orientation changes in react-native",
   "main": "index.js",
   "scripts": {

@@ -24,7 +24,7 @@ Orientation module adapted from @clavery.
   componentDidMount: function(){
     Orientation.addOrientationListener(this._orientationDidChange);
   },
-  componentWillUnmount() {
+  componentWillUnmount: function() {
     Orientation.removeOrientationListener(this._orientationDidChange);
   }
 ```
