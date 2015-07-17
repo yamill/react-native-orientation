@@ -1,0 +1,16 @@
+{
+  "name": "react-native-orientation",
+  "version": "1.0.0",
+  "description": "Orientation module adapted from @clavery react-native-example.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "react",
+    "reactnative",
+    "react-native"
+  ],
+  "author": "Yamill Vallecillo <yamill@gmail.com> (github.com/yamill)",
+  "license": "ISC"
+}
