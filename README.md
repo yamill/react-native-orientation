@@ -1,5 +1,5 @@
 ## react-native-orientation
-
+Listen to device orientation changes in react-native.
 Orientation module adapted from @clavery.
 
 ### Add it to your project

@@ -1,7 +1,7 @@
 {
   "name": "react-native-orientation",
   "version": "1.0.0",
-  "description": "Orientation module adapted from @clavery react-native-example.",
+  "description": "Listen to device orientation changes in react-native",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -12,5 +12,13 @@
     "react-native"
   ],
   "author": "Yamill Vallecillo <yamill@gmail.com> (github.com/yamill)",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yamill/react-native-orientation.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yamill/react-native-orientation/issues"
+  },
+  "homepage": "https://github.com/yamill/react-native-orientation#readme"
 }
