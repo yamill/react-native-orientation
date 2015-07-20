@@ -3,6 +3,7 @@
 //
 
 #import "Orientation.h"
+#import "AppDelegate.h"
 
 @implementation Orientation
 
@@ -14,6 +15,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationDidChange:) name:@"UIDeviceOrientationDidChangeNotification" object:nil];
   }
   return self;
+  
 }
 
 - (NSUInteger)supportedInterfaceOrientations{
@@ -27,6 +29,7 @@
 
 - (void)deviceOrientationDidChange:(NSNotification *)notification
 {
+  
   UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
 
   NSString *orientationStr;
@@ -51,30 +54,12 @@
 
 RCT_EXPORT_MODULE();
 
-RCT_EXPORT_METHOD(get:(RCTResponseSenderBlock)callback)
+RCT_EXPORT_METHOD(shouldRotate:(BOOL *)b)
 {
-
-  UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
-
-  NSString *orientationStr;
-  switch (orientation) {
-    case UIDeviceOrientationPortrait:
-    case UIDeviceOrientationPortraitUpsideDown:
-      orientationStr = @"PORTRAIT";
-      break;
-    case UIDeviceOrientationLandscapeLeft:
-    case UIDeviceOrientationLandscapeRight:
-      orientationStr = @"LANDSCAPE";
-      break;
-    default:
-      orientationStr = @"UNKNOWN";
-      break;
-  }
-
-  // Change this depending on what you want to retrieve:
-  NSString *orientationString = [NSString stringWithFormat:@"%@", orientationStr];
-
-  callback(@[orientationString]);
+  //NSLog(@"Bool value: %d",b);
+  AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+  delegate.shouldRotate = b;
+  
 }
 
 

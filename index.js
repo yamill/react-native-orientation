@@ -5,6 +5,9 @@ var listeners = {};
 var deviceEvent = "orientationDidChange";
 
 module.exports = {
+  shouldRotate(string) {
+    Orientation.shouldRotate(string);
+  },
   addOrientationListener(cb) {
     listeners[cb] = RCTDeviceEventEmitter.addListener(deviceEvent,
       (body) => {
