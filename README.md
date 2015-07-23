@@ -18,7 +18,7 @@ Preferred orientation on screen to screen basis adapted from @dsibiski rnplay-io
 
   orientations = UIInterfaceOrientationMaskPortrait;
 
-  if (shouldRotate == YES) {
+  if (self.shouldRotate == YES) {
     orientations = UIInterfaceOrientationMaskAllButUpsideDown;
   }
 
