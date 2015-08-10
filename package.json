@@ -1,16 +1,20 @@
 {
   "name": "react-native-orientation",
-  "version": "1.2.0",
-  "description": "Listen to device orientation changes in react-native",
+  "version": "1.3.0",
+  "description": "Listen to device orientation changes in react-native and set preferred orientation on screen to screen basis",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "react",
-    "reactnative",
-    "react-native"
+    "react-component",
+    "react-native",
+    "ios",
+    "orientation"
   ],
+  "peerDependencies": {
+    "react-native": ">=0.5"
+  },
   "author": "Yamill Vallecillo <yamill@gmail.com> (github.com/yamill)",
   "license": "ISC",
   "repository": {
