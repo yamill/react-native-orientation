@@ -1,5 +1,5 @@
-var Orientation = require('NativeModules').Orientation;
-var RCTDeviceEventEmitter = require('RCTDeviceEventEmitter');
+var Orientation = require('react-native').NativeModules.Orientation;
+var RCTDeviceEventEmitter = require('react-native').RCTDeviceEventEmitter;
 
 var listeners = {};
 var deviceEvent = "orientationDidChange";
