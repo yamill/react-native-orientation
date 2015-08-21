@@ -5,8 +5,14 @@ var listeners = {};
 var deviceEvent = "orientationDidChange";
 
 module.exports = {
-  shouldRotate(string) {
-    Orientation.shouldRotate(string);
+  lockToPortrait() {
+    Orientation.lockToPortrait();
+  },
+  lockToLandscape() {
+    Orientation.lockToLandscape();
+  },
+  unlockAllOrientations() {
+    Orientation.unlockAllOrientations();
   },
   addOrientationListener(cb) {
     listeners[cb] = RCTDeviceEventEmitter.addListener(deviceEvent,

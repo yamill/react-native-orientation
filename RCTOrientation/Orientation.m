@@ -18,10 +18,6 @@
   
 }
 
-- (NSUInteger)supportedInterfaceOrientations{
-  return UIInterfaceOrientationMaskLandscape;
-}
-
 - (void)dealloc
 {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -54,11 +50,27 @@
 
 RCT_EXPORT_MODULE();
 
-RCT_EXPORT_METHOD(shouldRotate:(BOOL *)b)
+RCT_EXPORT_METHOD(lockToPortrait)
 {
-  //NSLog(@"Bool value: %d",b);
+  NSLog(@"Locked to Portrait");
   AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-  delegate.shouldRotate = b;
+  delegate.lockToPortrait = 1;
+  
+}
+
+RCT_EXPORT_METHOD(lockToLandscape)
+{
+  NSLog(@"Locked to Landscape");
+  AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+  delegate.lockToLandscape = 1;
+  
+}
+
+RCT_EXPORT_METHOD(unlockAllOrientations)
+{
+  NSLog(@"Unlock All Orientations");
+  AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+  delegate.unlockAllOrientations = 1;
   
 }
 
