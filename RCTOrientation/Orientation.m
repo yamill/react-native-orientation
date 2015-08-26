@@ -18,6 +18,7 @@
   
 }
 
+
 - (void)dealloc
 {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -43,6 +44,7 @@
       orientationStr = @"UNKNOWN";
       break;
   }
+  
 
   [_bridge.eventDispatcher sendDeviceEventWithName:@"orientationDidChange"
                                               body:@{@"orientation": orientationStr}];
@@ -54,7 +56,7 @@ RCT_EXPORT_METHOD(lockToPortrait)
 {
   NSLog(@"Locked to Portrait");
   AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-  delegate.lockToPortrait = 1;
+  delegate.orientation = 1;
   
 }
 
@@ -62,7 +64,7 @@ RCT_EXPORT_METHOD(lockToLandscape)
 {
   NSLog(@"Locked to Landscape");
   AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-  delegate.lockToLandscape = 1;
+  delegate.orientation = 2;
   
 }
 
@@ -70,7 +72,7 @@ RCT_EXPORT_METHOD(unlockAllOrientations)
 {
   NSLog(@"Unlock All Orientations");
   AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-  delegate.unlockAllOrientations = 1;
+  delegate.orientation = 3;
   
 }
 

@@ -6,34 +6,25 @@ Listen to device orientation changes in react-native and set preferred orientati
 1. Run `npm install react-native-orientation --save`
 2. Open your project in XCode, right click on your project and click `Add Files to "Your Project Name"`
 3. Add `RCTOrientation` from your `node_modules/react-native-orientation` folder.
-4. Open AppDelegate.h and add the following property above UIWindow
-```objective-c
-@property (nonatomic) bool lockToPortrait;
-@property (nonatomic) bool lockToLandscape;
-@property (nonatomic) bool unlockAllOrientations;
-```
+4. Open AppDelegate.h and add the following property `@property (nonatomic) int orientation;`
 5. Open AppDelegate.m and add the following before the `@end`
 
 ```objective-c
 - (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
-
-  NSUInteger orientations;
-
-  orientations = UIInterfaceOrientationMaskAllButUpsideDown;
-
-  if (self.lockToPortrait == YES) {
-    orientations = UIInterfaceOrientationMaskPortrait;
+  switch (self.orientation) {
+    case 1:
+      return UIInterfaceOrientationMaskPortrait;
+      break;
+    case 2:
+      return UIInterfaceOrientationMaskLandscape;
+      break;
+    case 3:
+      return UIInterfaceOrientationMaskAllButUpsideDown;
+      break;
+    default:
+      return UIInterfaceOrientationMaskPortrait;
+      break;
   }
-
-  if (self.lockToLandscape == YES) {
-    orientations = UIInterfaceOrientationMaskLandscape;
-  }
-
-  if (self.unlockAllOrientations == YES) {
-    orientations = UIInterfaceOrientationMaskAllButUpsideDown;
-  }
-
-  return orientations;
 }
 ```
 
@@ -83,3 +74,4 @@ orientation can return either `LANDSCAPE` `PORTRAIT` `UNKNOWN`
 
 - [x] Add some way to allow setting a preferred orientation on a screen by screen basis.
 - [x] Make API Cleaner to Orientation Locking
+- [] Find a way to expose shouldAutoRotate (??? a PR would be great)
