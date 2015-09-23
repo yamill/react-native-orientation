@@ -55,12 +55,17 @@ static int _orientation = 3;
 {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-
 - (void)deviceOrientationDidChange:(NSNotification *)notification
 {
 
   UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+  NSString *orientationStr = [self getOrientationStr:orientation];
 
+  [_bridge.eventDispatcher sendDeviceEventWithName:@"orientationDidChange"
+                                              body:@{@"orientation": orientationStr}];
+}
+
+- (NSString *)getOrientationStr: (UIDeviceOrientation)orientation {
   NSString *orientationStr;
   switch (orientation) {
     case UIDeviceOrientationPortrait:
@@ -76,13 +81,17 @@ static int _orientation = 3;
       orientationStr = @"UNKNOWN";
       break;
   }
-
-
-  [_bridge.eventDispatcher sendDeviceEventWithName:@"orientationDidChange"
-                                              body:@{@"orientation": orientationStr}];
+  return orientationStr;
 }
 
 RCT_EXPORT_MODULE();
+
+RCT_EXPORT_METHOD(getOrientation:(RCTResponseSenderBlock)callback)
+{
+  UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+  NSString *orientationStr = [self getOrientationStr:orientation];
+  callback(@[[NSNull null], orientationStr]);
+}
 
 RCT_EXPORT_METHOD(lockToPortrait)
 {
