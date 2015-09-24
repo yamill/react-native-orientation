@@ -6,27 +6,6 @@ Listen to device orientation changes in react-native and set preferred orientati
 1. Run `npm install react-native-orientation --save`
 2. Open your project in XCode, right click on your project and click `Add Files to "Your Project Name"`
 3. Add `RCTOrientation` from your `node_modules/react-native-orientation` folder.
-4. Open AppDelegate.h and add the following property `@property (nonatomic) int orientation;`
-5. Open AppDelegate.m and add the following before the `@end`
-
-```objective-c
-- (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
-  switch (self.orientation) {
-    case 1:
-      return UIInterfaceOrientationMaskPortrait;
-      break;
-    case 2:
-      return UIInterfaceOrientationMaskLandscape;
-      break;
-    case 3:
-      return UIInterfaceOrientationMaskAllButUpsideDown;
-      break;
-    default:
-      return UIInterfaceOrientationMaskPortrait;
-      break;
-  }
-}
-```
 
 Whenever you want to use it within React Native code now you can:
 `var Orientation = require('react-native-orientation');`
@@ -50,23 +29,24 @@ Whenever you want to use it within React Native code now you can:
     Orientation.addOrientationListener(this._orientationDidChange);
   },
   componentWillUnmount: function() {
+	Orientation.getOrientation((err,orientation)=> {
+		console.log("Current Device Orientation: ", orientation);
+	});
     Orientation.removeOrientationListener(this._orientationDidChange);
   }
 ```
 
 ## Events
 
-`addOrientationListener(function)`
-
-`removeOrientationListener(function)`
+- `addOrientationListener(function(orientation))`
+- `removeOrientationListener(function(orientation))`
 
 ## Functions
 
-`lockToPortrait()`
-`lockToLandscape()`
-`unlockAllOrientations()`
-
-`_orientationDidChange(orientation)`
+- `lockToPortrait()`
+- `lockToLandscape()`
+- `unlockAllOrientations()`
+- `getOrientation(function(err, orientation)`
 
 orientation can return either `LANDSCAPE` `PORTRAIT` `UNKNOWN`
 
