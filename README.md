@@ -5,7 +5,7 @@ Listen to device orientation changes in react-native and set preferred orientati
 
 1. Run `npm install react-native-orientation --save`
 2. Open your project in XCode, right click on your project and click `Add Files to "Your Project Name"`
-3. Add `RCTOrientation` from your `node_modules/react-native-orientation` folder.
+3. Add `RCTOrientation` folder from your `node_modules/react-native-orientation` folder. <b>Make sure you have 'Create Groups' selected</b>
 
 Whenever you want to use it within React Native code now you can:
 `var Orientation = require('react-native-orientation');`
