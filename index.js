@@ -5,6 +5,11 @@ var listeners = {};
 var deviceEvent = "orientationDidChange";
 
 module.exports = {
+  getOrientation(cb) {
+    Orientation.getOrientation((error,orientation) =>{
+      cb(error, orientation);
+    });
+  },
   lockToPortrait() {
     Orientation.lockToPortrait();
   },
