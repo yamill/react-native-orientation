@@ -3,9 +3,66 @@ Listen to device orientation changes in react-native and set preferred orientati
 
 ### Add it to your project
 
-1. Run `npm install react-native-orientation --save`
-2. Open your project in XCode, right click on your project and click `Add Files to "Your Project Name"`
-3. Add `RCTOrientation` folder from your `node_modules/react-native-orientation` folder. <b>Make sure you have 'Create Groups' selected</b>
+Run `npm install react-native-orientation --save`
+
+
+#### iOS
+
+1. Open your project in XCode, right click on your project and click `Add Files to "Your Project Name"`
+2. Add `RCTOrientation` folder from your `node_modules/react-native-orientation` folder. <b>Make sure you have 'Create Groups' selected</b>
+
+#### Android
+
+1. In `android/setting.gradle`
+
+    ```
+    ...
+    include ':Orientation', ':app'
+    project(':Orientation').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-orientation/android')
+    ```
+
+2. In `android/app/build.gradle`
+
+    ```
+    ...
+    dependencies {
+        ...
+        compile project(':Orientation')
+    }
+    ```
+
+3. Register module (in MainActivity.java)
+
+    ```
+    import com.github.yamill.orientation.OrientationPackage;  // <--- import
+
+    public class MainActivity extends Activity implements DefaultHardwareBackBtnHandler {
+      ......
+
+      @Override
+      protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mReactRootView = new ReactRootView(this);
+
+        mReactInstanceManager = ReactInstanceManager.builder()
+          .setApplication(getApplication())
+          .setBundleAssetName("index.android.bundle")
+          .setJSMainModuleName("index.android")
+          .addPackage(new MainReactPackage())
+          .addPackage(new OrientationPackage(this))              // <------ add here
+          .setUseDeveloperSupport(BuildConfig.DEBUG)
+          .setInitialLifecycleState(LifecycleState.RESUMED)
+          .build();
+
+        mReactRootView.startReactApplication(mReactInstanceManager, "ExampleRN", null);
+
+        setContentView(mReactRootView);
+      }
+
+      ......
+
+    }
+    ```
 
 Whenever you want to use it within React Native code now you can:
 `var Orientation = require('react-native-orientation');`
