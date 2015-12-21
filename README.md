@@ -106,7 +106,7 @@ Whenever you want to use it within React Native code now you can:
 - `getOrientation(function(err, orientation)`
 
 orientation can return either `LANDSCAPE` `PORTRAIT` `UNKNOWN`
-
+also 'PORTRAITUPSIDEDOWN' is now different from PORTRAIT
 ## TODOS
 
 - [x] Add some way to allow setting a preferred orientation on a screen by screen basis.
