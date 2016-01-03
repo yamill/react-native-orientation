@@ -23,7 +23,6 @@ import java.util.Map;
 
 public class OrientationModule extends ReactContextBaseJavaModule {
     final private Activity mActivity;
-    final private OrientationEventListener mOrientationListener;
 
     public OrientationModule(ReactApplicationContext reactContext, Activity activity) {
         super(reactContext);
@@ -32,38 +31,39 @@ public class OrientationModule extends ReactContextBaseJavaModule {
 
         final ReactApplicationContext ctx = reactContext;
 
-        mOrientationListener = new OrientationEventListener(reactContext, SensorManager.SENSOR_DELAY_NORMAL) {
+        final BroadcastReceiver receiver = new BroadcastReceiver() {
             @Override
-            public void onOrientationChanged(int orientation) {
-                final String orientationValue = orientation == 0
-                    ? "PORTRAIT"
-                    : "LANDSCAPE";
+            public void onReceive(Context context, Intent intent) {
+                Configuration newConfig = intent.getParcelableExtra("newConfig");
+                Log.d("receiver", String.valueOf(newConfig.orientation));
+
+                String orientationValue = newConfig.orientation == 1 ? "PORTRAIT" : "LANDSCAPE";
 
                 WritableMap params = Arguments.createMap();
                 params.putString("orientation", orientationValue);
 
                 ctx
-                  .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                  .emit("orientationDidChange", params);
+                        .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                        .emit("orientationDidChange", params);
             }
         };
+
+        activity.registerReceiver(receiver, new IntentFilter("onConfigurationChanged"));
 
         LifecycleEventListener listener = new LifecycleEventListener() {
             @Override
             public void onHostResume() {
-                if (mOrientationListener.canDetectOrientation() == true) {
-                    mOrientationListener.enable();
-                } else {
-                    mOrientationListener.disable();
-                }
+                activity.registerReceiver(receiver, new IntentFilter("onConfigurationChanged"));
             }
 
             @Override
             public void onHostPause() {
+                activity.unregisterReceiver(receiver);
             }
 
             @Override
             public void onHostDestroy() {
+                activity.unregisterReceiver(receiver);
             }
         };
 
