@@ -1,30 +1,27 @@
 package com.github.yamill.orientation;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
-import android.hardware.SensorManager;
-import android.os.Build;
-import android.util.DisplayMetrics;
-import android.view.OrientationEventListener;
+import android.util.Log;
 
+import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-import com.facebook.react.bridge.Callback;
-import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
-import com.facebook.react.bridge.LifecycleEventListener;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class OrientationModule extends ReactContextBaseJavaModule {
     final private Activity mActivity;
 
-    public OrientationModule(ReactApplicationContext reactContext, Activity activity) {
+    public OrientationModule(ReactApplicationContext reactContext, final Activity activity) {
         super(reactContext);
 
         mActivity = activity;
@@ -105,6 +102,3 @@ public class OrientationModule extends ReactContextBaseJavaModule {
       mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
     }
 }
-
-
-
