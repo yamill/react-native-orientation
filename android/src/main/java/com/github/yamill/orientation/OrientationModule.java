@@ -9,6 +9,7 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.util.Log;
 
+import com.facebook.common.logging.FLog;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.LifecycleEventListener;
@@ -16,6 +17,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.common.ReactConstants;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 public class OrientationModule extends ReactContextBaseJavaModule {
@@ -59,7 +61,9 @@ public class OrientationModule extends ReactContextBaseJavaModule {
                 {
                     activity.unregisterReceiver(receiver);
                 }
-                catch (java.lang.IllegalArgumentException e) { }
+                catch (java.lang.IllegalArgumentException e) {
+                    FLog.e(ReactConstants.TAG, "receiver already unregistered", e);
+                }
             }
 
             @Override
@@ -68,7 +72,9 @@ public class OrientationModule extends ReactContextBaseJavaModule {
                 {
                     activity.unregisterReceiver(receiver);
                 }
-                catch (java.lang.IllegalArgumentException e) { }
+                catch (java.lang.IllegalArgumentException e) {
+                    FLog.e(ReactConstants.TAG, "receiver already unregistered", e);
+                }
             }
         };
 
