@@ -55,12 +55,20 @@ public class OrientationModule extends ReactContextBaseJavaModule {
 
             @Override
             public void onHostPause() {
-                activity.unregisterReceiver(receiver);
+                try
+                {
+                    activity.unregisterReceiver(receiver);
+                }
+                catch (java.lang.IllegalArgumentException e) { }
             }
 
             @Override
             public void onHostDestroy() {
-                activity.unregisterReceiver(receiver);
+                try
+                {
+                    activity.unregisterReceiver(receiver);
+                }
+                catch (java.lang.IllegalArgumentException e) { }
             }
         };
 
