@@ -60,7 +60,6 @@ public class OrientationModule extends ReactContextBaseJavaModule {
 
             @Override
             public void onHostDestroy() {
-                activity.unregisterReceiver(receiver);
             }
         };
 
