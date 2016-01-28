@@ -101,8 +101,9 @@ RCT_EXPORT_METHOD(lockToPortrait)
 {
   NSLog(@"Locked to Portrait");
   [Orientation setOrientation:1];
-//  AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-//  delegate.orientation = 1;
+  [[NSOperationQueue mainQueue] addOperationWithBlock:^ {
+    [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger: UIInterfaceOrientationPortrait] forKey:@"orientation"];
+  }];
 
 }
 
@@ -110,9 +111,10 @@ RCT_EXPORT_METHOD(lockToLandscape)
 {
   NSLog(@"Locked to Landscape");
   [Orientation setOrientation:2];
-//  AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-//  delegate.orientation = 2;
-
+  [[NSOperationQueue mainQueue] addOperationWithBlock:^ {
+    [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger: UIInterfaceOrientationLandscapeLeft] forKey:@"orientation"];
+  }];
+  
 }
 
 RCT_EXPORT_METHOD(unlockAllOrientations)
@@ -121,8 +123,8 @@ RCT_EXPORT_METHOD(unlockAllOrientations)
   [Orientation setOrientation:3];
 //  AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 //  delegate.orientation = 3;
-
 }
 
 
 @end
+
