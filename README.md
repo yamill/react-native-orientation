@@ -125,3 +125,4 @@ also 'PORTRAITUPSIDEDOWN' is now different from PORTRAIT
 
 - [x] Add some way to allow setting a preferred orientation on a screen by screen basis.
 - [x] Make API Cleaner to Orientation Locking
+- [x] Android Support
