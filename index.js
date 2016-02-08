@@ -10,11 +10,22 @@ module.exports = {
       cb(error, orientation);
     });
   },
+  getSpecificOrientation(cb) {
+    Orientation.getSpecificOrientation((error,orientation) =>{
+      cb(error, orientation);
+    });
+  },
   lockToPortrait() {
     Orientation.lockToPortrait();
   },
   lockToLandscape() {
     Orientation.lockToLandscape();
+  },
+  lockToLandscapeRight() {
+    Orientation.lockToLandscapeRight();
+  },
+  lockToLandscapeLeft() {
+    Orientation.lockToLandscapeLeft();
   },
   unlockAllOrientations() {
     Orientation.unlockAllOrientations();

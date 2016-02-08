@@ -88,12 +88,45 @@ static int _orientation = 3;
   return orientationStr;
 }
 
+- (NSString *)getSpecificOrientationStr: (UIDeviceOrientation)orientation {
+  NSString *orientationStr;
+  switch (orientation) {
+    case UIDeviceOrientationPortrait:
+      orientationStr = @"PORTRAIT";
+      break;
+
+    case UIDeviceOrientationLandscapeLeft:
+      orientationStr = @"LANDSCAPE-LEFT";
+      break;
+
+    case UIDeviceOrientationLandscapeRight:
+      orientationStr = @"LANDSCAPE-RIGHT";
+      break;
+
+    case UIDeviceOrientationPortraitUpsideDown:
+      orientationStr = @"PORTRAITUPSIDEDOWN";
+      break;
+
+    default:
+      orientationStr = @"UNKNOWN";
+      break;
+  }
+  return orientationStr;
+}
+
 RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(getOrientation:(RCTResponseSenderBlock)callback)
 {
   UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
   NSString *orientationStr = [self getOrientationStr:orientation];
+  callback(@[[NSNull null], orientationStr]);
+}
+
+RCT_EXPORT_METHOD(getSpecificOrientation:(RCTResponseSenderBlock)callback)
+{
+  UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+  NSString *orientationStr = [self getSpecificOrientationStr:orientation];
   callback(@[[NSNull null], orientationStr]);
 }
 
@@ -119,6 +152,30 @@ RCT_EXPORT_METHOD(lockToLandscape)
     [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger: UIInterfaceOrientationLandscapeLeft] forKey:@"orientation"];
   }];
   
+}
+
+RCT_EXPORT_METHOD(lockToLandscapeRight)
+{
+  #if DEBUG
+    NSLog(@"Locked to Landscape Right");
+  #endif
+    [Orientation setOrientation:2];
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^ {
+        [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger: UIInterfaceOrientationLandscapeLeft] forKey:@"orientation"];
+    }];
+
+}
+
+RCT_EXPORT_METHOD(lockToLandscapeLeft)
+{
+  #if DEBUG
+    NSLog(@"Locked to Landscape Left");
+  #endif
+  [Orientation setOrientation:2];
+  [[NSOperationQueue mainQueue] addOperationWithBlock:^ {
+    [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger: UIInterfaceOrientationLandscapeRight] forKey:@"orientation"];
+  }];
+
 }
 
 RCT_EXPORT_METHOD(unlockAllOrientations)
