@@ -110,17 +110,27 @@ Whenever you want to use it within React Native code now you can:
 ## Events
 
 - `addOrientationListener(function(orientation))`
+
+orientation can return either `LANDSCAPE` `PORTRAIT` `UNKNOWN`
+also `PORTRAITUPSIDEDOWN` is now different from `PORTRAIT`
+
 - `removeOrientationListener(function(orientation))`
 
 ## Functions
 
 - `lockToPortrait()`
 - `lockToLandscape()`
+- `lockToLandscapeLeft()`
+- `lockToLandscapeRight()`
 - `unlockAllOrientations()`
 - `getOrientation(function(err, orientation)`
 
-orientation can return either `LANDSCAPE` `PORTRAIT` `UNKNOWN`
-also 'PORTRAITUPSIDEDOWN' is now different from PORTRAIT
+orientation can return either `LANDSCAPE` `PORTRAIT` `UNKNOWN` `PORTRAITUPSIDEDOWN`
+
+- `getSpecificOrientation(function(err, specificOrientation)`
+
+specificOrientation can return either `LANDSCAPE-LEFT` `LANDSCAPE-RIGHT` `PORTRAIT` `UNKNOWN` `PORTRAITUPSIDEDOWN`
+
 ## TODOS
 
 - [x] Add some way to allow setting a preferred orientation on a screen by screen basis.
