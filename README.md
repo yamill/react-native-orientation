@@ -116,6 +116,12 @@ also `PORTRAITUPSIDEDOWN` is now different from `PORTRAIT`
 
 - `removeOrientationListener(function(orientation))`
 
+- `addSpecificOrientationListener(function(specificOrientation))`
+
+specificOrientation can return either `LANDSCAPE-LEFT` `LANDSCAPE-RIGHT` `PORTRAIT` `UNKNOWN` `PORTRAITUPSIDEDOWN`
+
+- `removeSpecificOrientationListener(function(specificOrientation))`
+
 ## Functions
 
 - `lockToPortrait()`
