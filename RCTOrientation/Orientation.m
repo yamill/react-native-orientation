@@ -50,19 +50,20 @@ static int _orientation = 3;
 
 }
 
-
 - (void)dealloc
 {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
 - (void)deviceOrientationDidChange:(NSNotification *)notification
 {
-
   UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
-  NSString *orientationStr = [self getOrientationStr:orientation];
+  [_bridge.eventDispatcher sendDeviceEventWithName:@"specificOrientationDidChange"
+                                              body:@{@"specificOrientation": [self getSpecificOrientationStr:orientation]}];
 
   [_bridge.eventDispatcher sendDeviceEventWithName:@"orientationDidChange"
-                                              body:@{@"orientation": orientationStr}];
+                                              body:@{@"orientation": [self getOrientationStr:orientation]}];
+
 }
 
 - (NSString *)getOrientationStr: (UIDeviceOrientation)orientation {

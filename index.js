@@ -2,7 +2,8 @@ var Orientation = require('react-native').NativeModules.Orientation;
 var DeviceEventEmitter = require('react-native').DeviceEventEmitter;
 
 var listeners = {};
-var deviceEvent = "orientationDidChange";
+var orientationDidChangeEvent = "orientationDidChange";
+var specificOrientationDidChangeEvent = "specificOrientationDidChange";
 
 module.exports = {
   getOrientation(cb) {
@@ -31,12 +32,25 @@ module.exports = {
     Orientation.unlockAllOrientations();
   },
   addOrientationListener(cb) {
-    listeners[cb] = DeviceEventEmitter.addListener(deviceEvent,
+    listeners[cb] = DeviceEventEmitter.addListener(orientationDidChangeEvent,
       (body) => {
         cb(body.orientation);
       });
   },
   removeOrientationListener(cb) {
+    if (!listeners[cb]) {
+      return;
+    }
+    listeners[cb].remove();
+    listeners[cb] = null;
+  },
+  addSpecificOrientationListener(cb) {
+    listeners[cb] = DeviceEventEmitter.addListener(specificOrientationDidChangeEvent,
+      (body) => {
+        cb(body.specificOrientation);
+      });
+  },
+  removeSpecificOrientationListener(cb) {
     if (!listeners[cb]) {
       return;
     }
