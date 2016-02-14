@@ -10,8 +10,8 @@
 #import "AppDelegate.h"
 
 @interface Orientation : NSObject <RCTBridgeModule>
-+ (void)setOrientation: (int)orientation;
-+ (int)getOrientation;
++ (void)setOrientation: (UIInterfaceOrientationMask)orientation;
++ (UIInterfaceOrientationMask)getOrientation;
 @end
 
 @interface AppDelegate (Orientation)
