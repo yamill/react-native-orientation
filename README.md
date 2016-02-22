@@ -86,19 +86,34 @@ Whenever you want to use it within React Native code now you can:
 
 ```javascript
   _orientationDidChange: function(orientation) {
-    if(orientation == 'LANDSCAPE'){
+    if (orientation == 'LANDSCAPE') {
       //do something with landscape layout
-    }else{
+    } else {
       //do something with portrait layout
     }
   },
-  componentDidMount: function(){
+
+  componentWillMount: function() {
+    //The getOrientation method is async. It happens sometimes that
+    //you need the orientation at the moment the js starts running on device.
+    //getInitialOrientation returns directly because its a constant set at the
+    //beginning of the js code.
+    var initial = Orientation.getInitialOrientation();
+    if (initial === 'PORTRAIT') {
+      //do stuff
+    } else {
+      //do other stuff
+    }
+  },
+
+  componentDidMount: function() {
     Orientation.lockToPortrait(); //this will lock the view to Portrait
     //Orientation.lockToLandscape(); //this will lock the view to Landscape
     //Orientation.unlockAllOrientations(); //this will unlock the view to all Orientations
 
     Orientation.addOrientationListener(this._orientationDidChange);
   },
+
   componentWillUnmount: function() {
 	Orientation.getOrientation((err,orientation)=> {
 		console.log("Current Device Orientation: ", orientation);
