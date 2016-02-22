@@ -9,6 +9,7 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.util.Log;
 import java.util.HashMap;
+import java.util.Map;
 import javax.annotation.Nullable;
 
 import com.facebook.common.logging.FLog;
