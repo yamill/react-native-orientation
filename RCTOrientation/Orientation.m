@@ -176,6 +176,16 @@ RCT_EXPORT_METHOD(unlockAllOrientations)
 //  delegate.orientation = 3;
 }
 
+- (NSDictionary *)constantsToExport
+{
+
+  UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+  NSString *orientationStr = [self getOrientationStr:orientation];
+
+  return @{
+    @"initialOrientation": orientationStr
+  };
+}
 
 @end
 

@@ -8,6 +8,8 @@ import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.util.Log;
+import java.util.HashMap;
+import javax.annotation.Nullable;
 
 import com.facebook.common.logging.FLog;
 import com.facebook.react.bridge.Arguments;
@@ -114,5 +116,15 @@ public class OrientationModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void unlockAllOrientations() {
       mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+    }
+
+    @Override
+    public @Nullable Map<String, Object> getConstants() {
+      HashMap<String, Object> constants = new HashMap<String, Object>();
+      int orientation = getReactApplicationContext().getResources().getConfiguration().orientation;
+
+      constants.put("initialOrientation", orientation);
+
+      return constants;
     }
 }
