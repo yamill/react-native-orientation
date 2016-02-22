@@ -123,7 +123,15 @@ public class OrientationModule extends ReactContextBaseJavaModule {
       HashMap<String, Object> constants = new HashMap<String, Object>();
       int orientation = getReactApplicationContext().getResources().getConfiguration().orientation;
 
-      constants.put("initialOrientation", orientation);
+      if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+          constants.put("initialOrientation", "LANDSCAPE");
+      } else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+          constants.put("initialOrientation", "PORTRAIT");
+      } else if (orientation == Configuration.ORIENTATION_UNDEFINED) {
+          constants.put("initialOrientation", "UNKNOWN");
+      } else {
+          constants.put("initialOrientation", "null");
+      }
 
       return constants;
     }
