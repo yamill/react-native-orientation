@@ -132,7 +132,7 @@ public class OrientationModule extends ReactContextBaseJavaModule {
       return constants;
     }
 
-    private String getOrientationString(int orientationInt) {
+    private String getOrientationString(int orientation) {
       if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
           return "LANDSCAPE";
       } else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
