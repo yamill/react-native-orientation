@@ -95,7 +95,7 @@ public class OrientationModule extends ReactContextBaseJavaModule {
 
         String orientation = this.getOrientationString(orientationInt);
 
-        if (orientation === "null") {
+        if (orientation == "null") {
           callback.invoke(orientationInt, null);
         } else {
           callback.invoke(null, orientation);
@@ -123,7 +123,7 @@ public class OrientationModule extends ReactContextBaseJavaModule {
       int orientationInt = getReactApplicationContext().getResources().getConfiguration().orientation;
 
       String orientation = this.getOrientationString(orientationInt);
-      if (orientation === "null") {
+      if (orientation == "null") {
         constants.put("initialOrientation", null);
       } else {
         constants.put("initialOrientation", orientation);
