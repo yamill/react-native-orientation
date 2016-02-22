@@ -91,16 +91,14 @@ public class OrientationModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void getOrientation(Callback callback) {
-        final int orientation = getReactApplicationContext().getResources().getConfiguration().orientation;
+        final int orientationInt = getReactApplicationContext().getResources().getConfiguration().orientation;
 
-        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            callback.invoke(null, "LANDSCAPE");
-        } else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-            callback.invoke(null, "PORTRAIT");
-        } else if (orientation == Configuration.ORIENTATION_UNDEFINED) {
-            callback.invoke(null, "UNKNOWN");
+        String orientation = this.getOrientationString(orientationInt);
+
+        if (orientation === "null") {
+          callback.invoke(orientationInt, null);
         } else {
-            callback.invoke(orientation, null);
+          callback.invoke(null, orientation);
         }
     }
 
@@ -122,18 +120,27 @@ public class OrientationModule extends ReactContextBaseJavaModule {
     @Override
     public @Nullable Map<String, Object> getConstants() {
       HashMap<String, Object> constants = new HashMap<String, Object>();
-      int orientation = getReactApplicationContext().getResources().getConfiguration().orientation;
+      int orientationInt = getReactApplicationContext().getResources().getConfiguration().orientation;
 
-      if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-          constants.put("initialOrientation", "LANDSCAPE");
-      } else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-          constants.put("initialOrientation", "PORTRAIT");
-      } else if (orientation == Configuration.ORIENTATION_UNDEFINED) {
-          constants.put("initialOrientation", "UNKNOWN");
+      String orientation = this.getOrientationString(orientationInt);
+      if (orientation === "null") {
+        constants.put("initialOrientation", null);
       } else {
-          constants.put("initialOrientation", "null");
+        constants.put("initialOrientation", orientation);
       }
 
       return constants;
+    }
+
+    private String getOrientationString(int orientationInt) {
+      if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+          return "LANDSCAPE";
+      } else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+          return "PORTRAIT";
+      } else if (orientation == Configuration.ORIENTATION_UNDEFINED) {
+          return "UNKNOWN";
+      } else {
+          return "null";
+      }
     }
 }
