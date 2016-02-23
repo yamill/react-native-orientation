@@ -56,5 +56,8 @@ module.exports = {
     }
     listeners[cb].remove();
     listeners[cb] = null;
+  },
+  getInitialOrientation() {
+    return Orientation.initialOrientation;
   }
 }
