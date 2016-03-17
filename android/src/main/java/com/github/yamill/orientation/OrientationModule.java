@@ -25,13 +25,16 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 public class OrientationModule extends ReactContextBaseJavaModule {
     final private Activity mActivity;
+    final private ReactApplicationContext mReactContext;
+    private static final int ORIENTATION_0 = 0;
+    private static final int ORIENTATION_90 = 3;
+    private static final int ORIENTATION_270 = 1;
 
     public OrientationModule(ReactApplicationContext reactContext, final Activity activity) {
         super(reactContext);
 
         mActivity = activity;
-
-        final ReactApplicationContext ctx = reactContext;
+        mReactContext = reactContext;
 
         final BroadcastReceiver receiver = new BroadcastReceiver() {
             @Override
@@ -44,9 +47,23 @@ public class OrientationModule extends ReactContextBaseJavaModule {
                 WritableMap params = Arguments.createMap();
                 params.putString("orientation", orientationValue);
 
-                ctx
+                mReactContext
                         .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                         .emit("orientationDidChange", params);
+
+                //Specific Orientation
+                Display display = ((WindowManager)
+                        mReactContext.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+                int screenOrientation = display.getRotation();
+
+                String specifOrientationValue = getSpecificOrientationString(screenOrientation);
+
+                WritableMap params2 = Arguments.createMap();
+                params2.putString("specificOrientation", specifOrientationValue);
+
+                mReactContext
+                        .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                        .emit("specificOrientationDidChange", params2);
             }
         };
 
@@ -103,6 +120,21 @@ public class OrientationModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void getSpecificOrientation(Callback callback) {
+
+        Display display = ((WindowManager)
+                mReactContext.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        int screenOrientation = display.getRotation();
+        String specifOrientationValue = getSpecificOrientationString(screenOrientation);
+
+        if (specifOrientationValue == "null") {
+            callback.invoke(screenOrientation, null);
+        } else {
+            callback.invoke(null, specifOrientationValue);
+        }
+    }
+
+    @ReactMethod
     public void lockToPortrait() {
       mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
@@ -142,5 +174,24 @@ public class OrientationModule extends ReactContextBaseJavaModule {
       } else {
           return "null";
       }
+    }
+
+    private String getSpecificOrientationString(int screenOrientation) {
+
+        String specifOrientationValue = "UNKNOWN";
+        switch (screenOrientation)
+        {
+            default:
+            case ORIENTATION_0: // Portrait
+                specifOrientationValue = "PORTRAIT";
+                break;
+            case ORIENTATION_90: // Landscape right
+                specifOrientationValue = "LANDSCAPE-RIGHT";
+                break;
+            case ORIENTATION_270: // Landscape left
+                specifOrientationValue = "LANDSCAPE-LEFT";
+                break;
+        }
+        return specifOrientationValue;
     }
 }
