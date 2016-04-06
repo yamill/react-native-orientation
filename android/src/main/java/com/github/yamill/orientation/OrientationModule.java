@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.text.TextUtils;
 import android.util.Log;
 import java.util.HashMap;
 import java.util.Map;
@@ -95,7 +96,7 @@ public class OrientationModule extends ReactContextBaseJavaModule {
 
         String orientation = this.getOrientationString(orientationInt);
 
-        if (orientation == "null") {
+        if (TextUtils.equals(orientation, "null")) {
           callback.invoke(orientationInt, null);
         } else {
           callback.invoke(null, orientation);
@@ -123,7 +124,7 @@ public class OrientationModule extends ReactContextBaseJavaModule {
       int orientationInt = getReactApplicationContext().getResources().getConfiguration().orientation;
 
       String orientation = this.getOrientationString(orientationInt);
-      if (orientation == "null") {
+      if (TextUtils.equals(orientation, "null")) {
         constants.put("initialOrientation", null);
       } else {
         constants.put("initialOrientation", orientation);
