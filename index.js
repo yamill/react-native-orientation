@@ -22,6 +22,9 @@ module.exports = {
   lockToLandscape() {
     Orientation.lockToLandscape();
   },
+  lockToSensorLandscape() {
+    Orientation.lockToSensorLandscape();
+  },
   lockToLandscapeRight() {
     Orientation.lockToLandscapeRight();
   },
