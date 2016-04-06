@@ -112,6 +112,11 @@ public class OrientationModule extends ReactContextBaseJavaModule {
     public void lockToLandscape() {
       mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
     }
+    
+    @ReactMethod
+    public void lockToSensorLandscape() {
+        mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+    }
 
     @ReactMethod
     public void unlockAllOrientations() {
