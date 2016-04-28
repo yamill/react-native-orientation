@@ -43,10 +43,11 @@ public class OrientationModule extends ReactContextBaseJavaModule {
 
                 WritableMap params = Arguments.createMap();
                 params.putString("orientation", orientationValue);
-
-                ctx
+                if (ctx.hasActiveCatalystInstance()) {
+                    ctx
                         .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                         .emit("orientationDidChange", params);
+                }
             }
         };
 
