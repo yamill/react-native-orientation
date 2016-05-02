@@ -42,23 +42,11 @@ Run `npm install react-native-orientation --save`
       ......
 
       @Override
-      protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mReactRootView = new ReactRootView(this);
-
-        mReactInstanceManager = ReactInstanceManager.builder()
-          .setApplication(getApplication())
-          .setBundleAssetName("index.android.bundle")
-          .setJSMainModuleName("index.android")
-          .addPackage(new MainReactPackage())
-          .addPackage(new OrientationPackage(this))              // <------ add here
-          .setUseDeveloperSupport(BuildConfig.DEBUG)
-          .setInitialLifecycleState(LifecycleState.RESUMED)
-          .build();
-
-        mReactRootView.startReactApplication(mReactInstanceManager, "ExampleRN", null);
-
-        setContentView(mReactRootView);
+      protected List<ReactPackage> getPackages() {
+          return Arrays.<ReactPackage>asList(
+              new MainReactPackage(),
+              new OrientationPackage(this)      <------- Add this
+          );
       }
 
       ......
