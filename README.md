@@ -54,18 +54,6 @@ Run `npm install react-native-orientation --save`
     }
     ```
 
-4. Implement onConfigurationChanged method (in MainActivity.java)
-
-```
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        Intent intent = new Intent("onConfigurationChanged");
-        intent.putExtra("newConfig", newConfig);
-        this.sendBroadcast(intent);
-    }
-```
-
 Whenever you want to use it within React Native code now you can:
 `var Orientation = require('react-native-orientation');`
 
