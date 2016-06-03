@@ -42,6 +42,7 @@ public class OrientationModule extends ReactContextBaseJavaModule implements Lif
     public static final String PORTRAIT_UPSIDEDOWN = "PORTRAITUPSIDEDOWN";
     public static final String ORIENTATION_UNKNOWN = "UNKNOWN";
 
+    private static final int ACTIVE_SECTOR_SIZE = 45;
     private final String[] ORIENTATIONS_PORTRAIT_DEVICE = {PORTRAIT, LANDSCAPE_RIGHT, PORTRAIT_UPSIDEDOWN, LANDSCAPE_LEFT};
     private final String[] ORIENTATIONS_LANDSCAPE_DEVICE = {LANDSCAPE_LEFT, PORTRAIT, LANDSCAPE_RIGHT, PORTRAIT_UPSIDEDOWN};
 
@@ -58,6 +59,15 @@ public class OrientationModule extends ReactContextBaseJavaModule implements Lif
                 if (isDeviceOrientationLocked() || !ctx.hasActiveCatalystInstance()) return;
 
                 mOrientationValue = orientationValue;
+
+                if (mOrientation != null && mSpecificOrientation != null) {
+                    final int halfSector = ACTIVE_SECTOR_SIZE / 2;
+                    if ((orientationValue % 90) > halfSector
+                        && (orientationValue % 90) < (90 - halfSector)) {
+                        return;
+                    }
+                }
+
                 final String orientation = getOrientationString(orientationValue);
                 final String specificOrientation = getSpecificOrientationString(orientationValue);
 
