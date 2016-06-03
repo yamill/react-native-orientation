@@ -94,28 +94,6 @@ Add the following to your project's `AppDelegate.m`:
 @end
 ```
 
-#### Android
-
-Implement onConfigurationChanged method (in MainActivity.java)
-
-```
-    import android.content.Intent; // <--- import
-    import android.content.res.Configuration; // <--- import
-
-    public class MainActivity extends ReactActivity {
-      ......
-      @Override
-      public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        Intent intent = new Intent("onConfigurationChanged");
-        intent.putExtra("newConfig", newConfig);
-        this.sendBroadcast(intent);
-    }
-
-      ......
-
-    }
-```
 
 ## Usage
 
