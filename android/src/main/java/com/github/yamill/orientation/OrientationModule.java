@@ -35,6 +35,8 @@ public class OrientationModule extends ReactContextBaseJavaModule implements Lif
     private String mSpecificOrientation;
     final private String[] mOrientations;
 
+    private boolean mHostActive = false;
+
     public static final String LANDSCAPE = "LANDSCAPE";
     public static final String LANDSCAPE_LEFT = "LANDSCAPE-LEFT";
     public static final String LANDSCAPE_RIGHT = "LANDSCAPE-RIGHT";
@@ -56,7 +58,7 @@ public class OrientationModule extends ReactContextBaseJavaModule implements Lif
              SensorManager.SENSOR_DELAY_NORMAL) {
             @Override
             public void onOrientationChanged(int orientationValue) {
-                if (isDeviceOrientationLocked() || !ctx.hasActiveCatalystInstance()) return;
+                if (!mHostActive || isDeviceOrientationLocked() || !reactContext.hasActiveCatalystInstance()) return;
 
                 mOrientationValue = orientationValue;
 
@@ -72,7 +74,7 @@ public class OrientationModule extends ReactContextBaseJavaModule implements Lif
                 final String specificOrientation = getSpecificOrientationString(orientationValue);
 
                 final DeviceEventManagerModule.RCTDeviceEventEmitter deviceEventEmitter =
-                    (DeviceEventManagerModule.RCTDeviceEventEmitter)ctx.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class);
+                    (DeviceEventManagerModule.RCTDeviceEventEmitter)reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class);
 
                 if (!orientation.equals(mOrientation)) {
                     mOrientation = orientation;
@@ -203,6 +205,7 @@ public class OrientationModule extends ReactContextBaseJavaModule implements Lif
 
     @Override
     public void onHostResume() {
+        mHostActive = true;
         final Activity activity = getCurrentActivity();
 
         assert activity != null;
@@ -210,6 +213,7 @@ public class OrientationModule extends ReactContextBaseJavaModule implements Lif
     }
     @Override
     public void onHostPause() {
+        mHostActive = false;
         final Activity activity = getCurrentActivity();
         if (activity == null) return;
         try
@@ -223,6 +227,7 @@ public class OrientationModule extends ReactContextBaseJavaModule implements Lif
 
     @Override
     public void onHostDestroy() {
+        mHostActive = false;
         final Activity activity = getCurrentActivity();
         if (activity == null) return;
         try
