@@ -31,10 +31,13 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 public class OrientationModule extends ReactContextBaseJavaModule {
     final private Activity mActivity;
     final OrientationEventListener mOrientationEventListener;
+    final LifecycleEventListener mLifecycleEventListener;
     private Integer mOrientationValue;
     private String mOrientation;
     private String mSpecificOrientation;
     final private String[] mOrientations;
+
+    private boolean mHostActive = false;
 
     public static final String LANDSCAPE = "LANDSCAPE";
     public static final String LANDSCAPE_LEFT = "LANDSCAPE-LEFT";
@@ -52,15 +55,23 @@ public class OrientationModule extends ReactContextBaseJavaModule {
 
         mActivity = activity;
 
-        final ReactApplicationContext ctx = reactContext;
-
         mOrientations = isLandscapeDevice() ? ORIENTATIONS_LANDSCAPE_DEVICE : ORIENTATIONS_PORTRAIT_DEVICE;
 
-        mOrientationEventListener = new OrientationEventListener(reactContext,
-             SensorManager.SENSOR_DELAY_NORMAL) {
+        mLifecycleEventListener = createLifecycleEventListener();
+        reactContext.addLifecycleEventListener(mLifecycleEventListener);
+
+        mOrientationEventListener = createOrientationEventListener(reactContext);
+        if (mOrientationEventListener.canDetectOrientation()) {
+            mOrientationEventListener.enable();
+        }
+    }
+
+    private OrientationEventListener createOrientationEventListener(final ReactApplicationContext reactContext) {
+        return new OrientationEventListener(reactContext,
+            SensorManager.SENSOR_DELAY_NORMAL) {
             @Override
             public void onOrientationChanged(int orientationValue) {
-                if (isDeviceOrientationLocked() || !ctx.hasActiveCatalystInstance()) return;
+                if (!mHostActive || isDeviceOrientationLocked() || !reactContext.hasActiveCatalystInstance()) return;
 
                 mOrientationValue = orientationValue;
 
@@ -76,7 +87,7 @@ public class OrientationModule extends ReactContextBaseJavaModule {
                 final String specificOrientation = getSpecificOrientationString(orientationValue);
 
                 final DeviceEventManagerModule.RCTDeviceEventEmitter deviceEventEmitter =
-                    (DeviceEventManagerModule.RCTDeviceEventEmitter)ctx.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class);
+                    (DeviceEventManagerModule.RCTDeviceEventEmitter)reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class);
 
                 if (!orientation.equals(mOrientation)) {
                     mOrientation = orientation;
@@ -93,10 +104,25 @@ public class OrientationModule extends ReactContextBaseJavaModule {
                 }
             }
         };
+    }
 
-        if (mOrientationEventListener.canDetectOrientation()) {
-            mOrientationEventListener.enable();
-        }
+    private LifecycleEventListener createLifecycleEventListener() {
+        return new LifecycleEventListener() {
+            @Override
+            public void onHostResume() {
+                mHostActive = true;
+            }
+
+            @Override
+            public void onHostPause() {
+                mHostActive = false;
+            }
+
+            @Override
+            public void onHostDestroy() {
+                mHostActive = false;
+            }
+        };
     }
 
     @Override
