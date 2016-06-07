@@ -37,8 +37,6 @@ public class OrientationModule extends ReactContextBaseJavaModule {
     private String mSpecificOrientation;
     final private String[] mOrientations;
 
-    private boolean mHostActive = false;
-
     public static final String LANDSCAPE = "LANDSCAPE";
     public static final String LANDSCAPE_LEFT = "LANDSCAPE-LEFT";
     public static final String LANDSCAPE_RIGHT = "LANDSCAPE-RIGHT";
@@ -61,9 +59,6 @@ public class OrientationModule extends ReactContextBaseJavaModule {
         reactContext.addLifecycleEventListener(mLifecycleEventListener);
 
         mOrientationEventListener = createOrientationEventListener(reactContext);
-        if (mOrientationEventListener.canDetectOrientation()) {
-            mOrientationEventListener.enable();
-        }
     }
 
     private OrientationEventListener createOrientationEventListener(final ReactApplicationContext reactContext) {
@@ -71,7 +66,7 @@ public class OrientationModule extends ReactContextBaseJavaModule {
             SensorManager.SENSOR_DELAY_NORMAL) {
             @Override
             public void onOrientationChanged(int orientationValue) {
-                if (!mHostActive || isDeviceOrientationLocked() || !reactContext.hasActiveCatalystInstance()) return;
+                if (isDeviceOrientationLocked() || !reactContext.hasActiveCatalystInstance()) return;
 
                 mOrientationValue = orientationValue;
 
@@ -110,17 +105,19 @@ public class OrientationModule extends ReactContextBaseJavaModule {
         return new LifecycleEventListener() {
             @Override
             public void onHostResume() {
-                mHostActive = true;
+                if (mOrientationEventListener.canDetectOrientation()) {
+                    mOrientationEventListener.enable();
+                }
             }
 
             @Override
             public void onHostPause() {
-                mHostActive = false;
+                mOrientationEventListener.disable();
             }
 
             @Override
             public void onHostDestroy() {
-                mHostActive = false;
+                mOrientationEventListener.disable();
             }
         };
     }
