@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "RCTOrientation"
-  s.version      = "1.15.0"
+  s.version      = "1.16.0"
   s.summary      = "Listen to device orientation changes in react-native."
   s.requires_arc = true
   s.author       = { 'Yamill Vallecillo' => 'yamill@gmail.com' }
