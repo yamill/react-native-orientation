@@ -1,5 +1,5 @@
 Pod::Spec.new do |s|
-  s.name         = "RCTOrientation"
+  s.name         = "react-native-orientation"
   s.version      = "1.16.0"
   s.summary      = "Listen to device orientation changes in react-native."
   s.requires_arc = true
