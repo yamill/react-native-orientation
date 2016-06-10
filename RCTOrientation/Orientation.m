@@ -3,17 +3,6 @@
 //
 
 #import "Orientation.h"
-#import "AppDelegate.h"
-
-
-@implementation AppDelegate (Orientation)
-
-- (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
-  return [Orientation getOrientation];
-}
-
-@end
-
 
 @implementation Orientation
 
