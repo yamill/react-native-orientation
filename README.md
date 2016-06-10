@@ -22,8 +22,8 @@ Or manually by:
 Next, in `AppDelegate.m` add:
 
 ```objc
-- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings {
- [RCTPushNotificationManager didRegisterUserNotificationSettings:notificationSettings];
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+  return [Orientation getOrientation];
 }
 ```
 
