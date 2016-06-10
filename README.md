@@ -8,8 +8,24 @@ Run `npm install react-native-orientation --save`
 
 #### iOS
 
+With Coacoa pods add:
+
+  ```ruby
+  pod 'ReactNativeOrientation'
+  ```
+
+Or manually by:
+
 1. Open your project in XCode, right click on your project and click `Add Files to "Your Project Name"`
 2. Add `RCTOrientation` folder from your `node_modules/react-native-orientation` folder. <b>Make sure you have 'Create Groups' selected</b>
+
+Next, in `AppDelegate.m` add:
+
+```objc
+- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings {
+ [RCTPushNotificationManager didRegisterUserNotificationSettings:notificationSettings];
+}
+```
 
 #### Android
 
