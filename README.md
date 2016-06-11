@@ -11,7 +11,7 @@ Run `npm install react-native-orientation --save`
 With Coacoa pods add:
 
   ```ruby
-  pod 'ReactNativeOrientation'
+  pod 'RNOrientation', :path => './node_modules/react-native-orientation'
   ```
 
 Or manually by:
@@ -20,7 +20,10 @@ Or manually by:
 2. Add `RCTOrientation` folder from your `node_modules/react-native-orientation` folder. <b>Make sure you have 'Create Groups' selected</b>
 
 Next, in `AppDelegate.m` add:
-
+```objc
+#import "Orientation.h"
+```
+and:
 ```objc
 - (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
   return [Orientation getOrientation];
