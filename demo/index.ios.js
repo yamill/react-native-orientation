@@ -16,17 +16,24 @@ class demo extends Component {
     this.state = {
       init,
       or: init,
+      sor: init,
     };
     this._updateOrientation = this._updateOrientation.bind(this);
     Orientation.addOrientationListener(this._updateOrientation);
+    this._updateSpecificOrientation = this._updateSpecificOrientation.bind(this);
+    Orientation.addSpecificOrientationListener(this._updateSpecificOrientation);
   }
 
   _updateOrientation(or) {
     this.setState({ or });
   }
 
+  _updateSpecificOrientation(sor) {
+    this.setState({ sor });
+  }
+
   render() {
-    const { init, or} = this.state;
+    const { init, or, sor} = this.state;
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
@@ -37,6 +44,9 @@ class demo extends Component {
         </Text>
         <Text style={styles.instructions}>
           {`Current Orientation: ${or}`}
+        </Text>
+        <Text style={styles.instructions}>
+          {`Specific Orientation: ${sor}`}
         </Text>
         <TouchableOpacity
           onPress={Orientation.unlockAllOrientations}
@@ -54,14 +64,32 @@ class demo extends Component {
             Lock To Portrait
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={Orientation.lockToLandscape}
-          style={styles.button}
-        >
-          <Text style={styles.instructions}>
-            Lock To Landscape
-          </Text>
-        </TouchableOpacity>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            onPress={Orientation.lockToLandscapeLeft}
+            style={styles.button}
+          >
+            <Text style={styles.instructions}>
+              Lock To Left
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={Orientation.lockToLandscape}
+            style={styles.button}
+          >
+            <Text style={styles.instructions}>
+              Lock To Landscape
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={Orientation.lockToLandscapeRight}
+            style={styles.button}
+          >
+            <Text style={styles.instructions}>
+              Lock To Right
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -83,6 +111,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#333333',
     marginBottom: 5,
+  },
+  buttonContainer: {
+    flex: 0,
+    flexDirection: 'row',
+    justifyContent: 'space-around'
   },
   button: {
     padding: 5,
