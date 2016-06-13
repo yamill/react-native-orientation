@@ -2,9 +2,9 @@ package com.demo;
 
 import android.content.Intent;
 import android.content.res.Configuration;
-import com.github.yamill.orientation.OrientationPackage;
 
 import com.facebook.react.ReactActivity;
+import com.github.yamill.orientation.OrientationPackage;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 

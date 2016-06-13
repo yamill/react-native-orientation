@@ -3,20 +3,9 @@
 //
 
 #import "Orientation.h"
-#import "AppDelegate.h"
-
-
-@implementation AppDelegate (Orientation)
-
-- (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
-  return [Orientation getOrientation];
-}
-
-@end
-
+#import "RCTEventDispatcher.h"
 
 @implementation Orientation
-
 @synthesize bridge = _bridge;
 
 static UIInterfaceOrientationMask _orientation = UIInterfaceOrientationMaskAllButUpsideDown;
@@ -44,10 +33,10 @@ static UIInterfaceOrientationMask _orientation = UIInterfaceOrientationMaskAllBu
 - (void)deviceOrientationDidChange:(NSNotification *)notification
 {
   UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
-  [_bridge.eventDispatcher sendDeviceEventWithName:@"specificOrientationDidChange"
+  [self.bridge.eventDispatcher sendDeviceEventWithName:@"specificOrientationDidChange"
                                               body:@{@"specificOrientation": [self getSpecificOrientationStr:orientation]}];
 
-  [_bridge.eventDispatcher sendDeviceEventWithName:@"orientationDidChange"
+  [self.bridge.eventDispatcher sendDeviceEventWithName:@"orientationDidChange"
                                               body:@{@"orientation": [self getOrientationStr:orientation]}];
 
 }
@@ -196,4 +185,3 @@ RCT_EXPORT_METHOD(unlockAllOrientations)
 }
 
 @end
-
