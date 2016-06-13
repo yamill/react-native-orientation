@@ -80,16 +80,16 @@ Consult the React Native documentation on how to [install React Native using Coc
 
 Add the following to your project's `AppDelegate.m`:
 
->Note: This AppDelegate implementation should be added in addition to the existing one, not replace/modify it.
-
 ```objc
 #import "Orientation.h" // <--- import
 
-@implementation AppDelegate (Orientation) // <--- receives Orientation
+@implementation AppDelegate
 
-- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
-  return [Orientation getOrientation];
-}
+  // ...
+
+  - (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+    return [Orientation getOrientation];
+  }
 
 @end
 ```

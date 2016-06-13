@@ -12,15 +12,11 @@
 #import "Orientation.h"
 #import "RCTRootView.h"
 
-@implementation AppDelegate (Orientation)
+@implementation AppDelegate
 
 - (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
   return [Orientation getOrientation];
 }
-
-@end
-
-@implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
