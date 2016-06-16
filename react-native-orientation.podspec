@@ -19,4 +19,5 @@ Pod::Spec.new do |s|
   s.source_files   = 'iOS/RCTOrientation/*.{h,m}'
 
   s.dependency 'React'
+  s.module_name = "ReactNativeOrientation"
 end
