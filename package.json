@@ -1,6 +1,6 @@
 {
   "name": "react-native-orientation",
-  "version": "1.15.0",
+  "version": "1.17.0",
   "description": "Listen to device orientation changes in react-native and set preferred orientation on screen to screen basis",
   "main": "index.js",
   "scripts": {
@@ -25,5 +25,13 @@
   "bugs": {
     "url": "https://github.com/yamill/react-native-orientation/issues"
   },
-  "homepage": "https://github.com/yamill/react-native-orientation#readme"
+  "homepage": "https://github.com/yamill/react-native-orientation#readme",
+  "rnpm": {
+    "android": {
+      "packageInstance": "new OrientationPackage(this)"
+    },
+    "ios": {
+      "project": "iOS/RCTOrientation.xcodeproj"
+    }
+  }
 }

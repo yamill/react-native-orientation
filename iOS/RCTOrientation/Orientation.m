@@ -3,20 +3,9 @@
 //
 
 #import "Orientation.h"
-#import "AppDelegate.h"
-
-
-@implementation AppDelegate (Orientation)
-
-- (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
-  return [Orientation getOrientation];
-}
-
-@end
-
+#import "RCTEventDispatcher.h"
 
 @implementation Orientation
-
 @synthesize bridge = _bridge;
 
 static UIInterfaceOrientationMask _orientation = UIInterfaceOrientationMaskAllButUpsideDown;
@@ -44,10 +33,10 @@ static UIInterfaceOrientationMask _orientation = UIInterfaceOrientationMaskAllBu
 - (void)deviceOrientationDidChange:(NSNotification *)notification
 {
   UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-  [_bridge.eventDispatcher sendDeviceEventWithName:@"specificOrientationDidChange"
+  [self.bridge.eventDispatcher sendDeviceEventWithName:@"specificOrientationDidChange"
                                               body:@{@"specificOrientation": [self getSpecificOrientationStr:orientation]}];
 
-  [_bridge.eventDispatcher sendDeviceEventWithName:@"orientationDidChange"
+  [self.bridge.eventDispatcher sendDeviceEventWithName:@"orientationDidChange"
                                               body:@{@"orientation": [self getOrientationStr:orientation]}];
 
 }
@@ -134,11 +123,19 @@ RCT_EXPORT_METHOD(lockToLandscape)
   #if DEBUG
     NSLog(@"Locked to Landscape");
   #endif
-  [Orientation setOrientation:UIInterfaceOrientationMaskLandscape];
-  [[NSOperationQueue mainQueue] addOperationWithBlock:^ {
-    [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger: UIInterfaceOrientationLandscapeLeft] forKey:@"orientation"];
-  }];
-  
+  UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+  NSString *orientationStr = [self getSpecificOrientationStr:orientation];
+  if ([orientationStr isEqualToString:@"LANDSCAPE-LEFT"]) {
+    [Orientation setOrientation:UIInterfaceOrientationMaskLandscape];
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^ {
+      [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger: UIInterfaceOrientationLandscapeRight] forKey:@"orientation"];
+    }];
+  } else {
+    [Orientation setOrientation:UIInterfaceOrientationMaskLandscape];
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^ {
+      [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger: UIInterfaceOrientationLandscapeLeft] forKey:@"orientation"];
+    }];
+  }
 }
 
 RCT_EXPORT_METHOD(lockToLandscapeRight)
@@ -188,4 +185,3 @@ RCT_EXPORT_METHOD(unlockAllOrientations)
 }
 
 @end
-

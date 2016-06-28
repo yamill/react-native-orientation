@@ -1,24 +1,46 @@
 ## react-native-orientation
 Listen to device orientation changes in react-native and set preferred orientation on screen to screen basis.
 
-### Add it to your project
+### Installation
+
+#### via rnpm
+
+Run `rnpm install react-native-orientation`
+
+> Note: rnpm will install and link the library automatically.
+
+#### via npm
 
 Run `npm install react-native-orientation --save`
 
+### Linking
 
-#### iOS
+#### Using rnpm (iOS + Android)
 
-1. Open your project in XCode, right click on your project and click `Add Files to "Your Project Name"`
-2. Add `RCTOrientation` folder from your `node_modules/react-native-orientation` folder. <b>Make sure you have 'Create Groups' selected</b>
+`rnpm link react-native-orientation`
 
-#### Android
+#### Using [CocoaPods](https://cocoapods.org) (iOS Only)
+
+`pod 'react-native-orientation', :path => 'node_modules/react-native-orientation'`
+
+Consult the React Native documentation on how to [install React Native using CocoaPods](https://facebook.github.io/react-native/docs/embedded-app-ios.html#install-react-native-using-cocoapods).
+
+#### Manually
+
+**iOS**
+
+1. Add `node_modules/react-native-orientation/iOS/RCTOrientation.xcodeproj` to your xcode project, usually under the `Libraries` group
+1. Add `libRCTOrientation.a` (from `Products` under `RCTOrientation.xcodeproj`) to build target's `Linked Frameworks and Libraries` list
+
+
+**Android**
 
 1. In `android/setting.gradle`
 
     ```
     ...
-    include ':Orientation', ':app'
-    project(':Orientation').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-orientation/android')
+    include ':react-native-orientation', ':app'
+    project(':react-native-orientation').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-orientation/android')
     ```
 
 2. In `android/app/build.gradle`
@@ -27,38 +49,24 @@ Run `npm install react-native-orientation --save`
     ...
     dependencies {
         ...
-        compile project(':Orientation')
+        compile project(':react-native-orientation')
     }
     ```
 
 3. Register module (in MainActivity.java)
 
     ```
-    import android.content.Intent; // <--- import
-    import android.content.res.Configuration; // <--- import
     import com.github.yamill.orientation.OrientationPackage;  // <--- import
 
-    public class MainActivity extends Activity implements DefaultHardwareBackBtnHandler {
+    public class MainActivity extends ReactActivity {
       ......
 
       @Override
-      protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mReactRootView = new ReactRootView(this);
-
-        mReactInstanceManager = ReactInstanceManager.builder()
-          .setApplication(getApplication())
-          .setBundleAssetName("index.android.bundle")
-          .setJSMainModuleName("index.android")
-          .addPackage(new MainReactPackage())
-          .addPackage(new OrientationPackage(this))              // <------ add here
-          .setUseDeveloperSupport(BuildConfig.DEBUG)
-          .setInitialLifecycleState(LifecycleState.RESUMED)
-          .build();
-
-        mReactRootView.startReactApplication(mReactInstanceManager, "ExampleRN", null);
-
-        setContentView(mReactRootView);
+      protected List<ReactPackage> getPackages() {
+          return Arrays.<ReactPackage>asList(
+              new MainReactPackage(),
+              new OrientationPackage(this)      <------- Add this
+          );
       }
 
       ......
@@ -66,23 +74,53 @@ Run `npm install react-native-orientation --save`
     }
     ```
 
-4. Implement onConfigurationChanged method (in MainActivity.java)
+### Configuration
+
+#### iOS
+
+Add the following to your project's `AppDelegate.m`:
+
+```objc
+#import "Orientation.h" // <--- import
+
+@implementation AppDelegate
+
+  // ...
+
+  - (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+    return [Orientation getOrientation];
+  }
+
+@end
+```
+
+#### Android
+
+Implement onConfigurationChanged method (in MainActivity.java)
 
 ```
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
+    import android.content.Intent; // <--- import
+    import android.content.res.Configuration; // <--- import
+
+    public class MainActivity extends ReactActivity {
+      ......
+      @Override
+      public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         Intent intent = new Intent("onConfigurationChanged");
         intent.putExtra("newConfig", newConfig);
         this.sendBroadcast(intent);
     }
+
+      ......
+
+    }
 ```
+
+## Usage
 
 Whenever you want to use it within React Native code now you can:
 `var Orientation = require('react-native-orientation');`
-
-
-## Usage
 
 ```javascript
   _orientationDidChange: function(orientation) {
@@ -115,9 +153,9 @@ Whenever you want to use it within React Native code now you can:
   },
 
   componentWillUnmount: function() {
-	Orientation.getOrientation((err,orientation)=> {
-		console.log("Current Device Orientation: ", orientation);
-	});
+    Orientation.getOrientation((err,orientation)=> {
+      console.log("Current Device Orientation: ", orientation);
+    });
     Orientation.removeOrientationListener(this._orientationDidChange);
   }
 ```
