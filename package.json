@@ -28,7 +28,7 @@
   "homepage": "https://github.com/yamill/react-native-orientation#readme",
   "rnpm": {
     "android": {
-      "packageInstance": "new OrientationPackage(this)"
+      "packageInstance": "new OrientationPackage()"
     },
     "ios": {
       "project": "iOS/RCTOrientation.xcodeproj"

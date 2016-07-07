@@ -8,9 +8,6 @@ import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.util.Log;
-import java.util.HashMap;
-import java.util.Map;
-import javax.annotation.Nullable;
 
 import com.facebook.common.logging.FLog;
 import com.facebook.react.bridge.Arguments;
@@ -23,17 +20,21 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.common.ReactConstants;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
-public class OrientationModule extends ReactContextBaseJavaModule {
-    final private Activity mActivity;
+import java.util.HashMap;
+import java.util.Map;
 
-    public OrientationModule(ReactApplicationContext reactContext, final Activity activity) {
+import javax.annotation.Nullable;
+
+public class OrientationModule extends ReactContextBaseJavaModule implements LifecycleEventListener{
+    final BroadcastReceiver receiver;
+
+    public OrientationModule(ReactApplicationContext reactContext) {
         super(reactContext);
 
-        mActivity = activity;
 
         final ReactApplicationContext ctx = reactContext;
 
-        final BroadcastReceiver receiver = new BroadcastReceiver() {
+        receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 Configuration newConfig = intent.getParcelableExtra("newConfig");
@@ -51,38 +52,6 @@ public class OrientationModule extends ReactContextBaseJavaModule {
             }
         };
 
-        activity.registerReceiver(receiver, new IntentFilter("onConfigurationChanged"));
-
-        LifecycleEventListener listener = new LifecycleEventListener() {
-            @Override
-            public void onHostResume() {
-                activity.registerReceiver(receiver, new IntentFilter("onConfigurationChanged"));
-            }
-
-            @Override
-            public void onHostPause() {
-                try
-                {
-                    activity.unregisterReceiver(receiver);
-                }
-                catch (java.lang.IllegalArgumentException e) {
-                    FLog.e(ReactConstants.TAG, "receiver already unregistered", e);
-                }
-            }
-
-            @Override
-            public void onHostDestroy() {
-                try
-                {
-                    activity.unregisterReceiver(receiver);
-                }
-                catch (java.lang.IllegalArgumentException e) {
-                    FLog.e(ReactConstants.TAG, "receiver already unregistered", e);
-                }
-            }
-        };
-
-        reactContext.addLifecycleEventListener(listener);
     }
 
     @Override
@@ -105,26 +74,36 @@ public class OrientationModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void lockToPortrait() {
+        final Activity mActivity = getCurrentActivity();
+        if (mActivity == null) return;
       mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
     @ReactMethod
     public void lockToLandscape() {
+        final Activity mActivity = getCurrentActivity();
+        if (mActivity == null) return;
       mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
     }
 
     @ReactMethod
     public void lockToLandscapeLeft() {
+        final Activity mActivity = getCurrentActivity();
+        if (mActivity == null) return;
       mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
     }
 
     @ReactMethod
     public void lockToLandscapeRight() {
+        final Activity mActivity = getCurrentActivity();
+        if (mActivity == null) return;
       mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
     }
 
     @ReactMethod
     public void unlockAllOrientations() {
+        final Activity mActivity = getCurrentActivity();
+        if (mActivity == null) return;
       mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
     }
 
@@ -154,4 +133,36 @@ public class OrientationModule extends ReactContextBaseJavaModule {
           return "null";
       }
     }
+
+    @Override
+    public void onHostResume() {
+        final Activity activity = getCurrentActivity();
+
+        assert activity != null;
+        activity.registerReceiver(receiver, new IntentFilter("onConfigurationChanged"));
+    }
+    @Override
+    public void onHostPause() {
+        final Activity activity = getCurrentActivity();
+        if (activity == null) return;
+        try
+        {
+            activity.unregisterReceiver(receiver);
+        }
+        catch (java.lang.IllegalArgumentException e) {
+            FLog.e(ReactConstants.TAG, "receiver already unregistered", e);
+        }
+    }
+
+    @Override
+    public void onHostDestroy() {
+        final Activity activity = getCurrentActivity();
+        if (activity == null) return;
+        try
+        {
+            activity.unregisterReceiver(receiver);
+        }
+        catch (java.lang.IllegalArgumentException e) {
+            FLog.e(ReactConstants.TAG, "receiver already unregistered", e);
+        }}
 }
