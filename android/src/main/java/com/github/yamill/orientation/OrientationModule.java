@@ -51,7 +51,7 @@ public class OrientationModule extends ReactContextBaseJavaModule implements Lif
                 }
             }
         };
-
+	ctx.addLifecycleEventListener(this);
     }
 
     @Override
