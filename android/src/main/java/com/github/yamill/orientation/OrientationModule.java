@@ -30,8 +30,6 @@ public class OrientationModule extends ReactContextBaseJavaModule implements Lif
 
     public OrientationModule(ReactApplicationContext reactContext) {
         super(reactContext);
-
-
         final ReactApplicationContext ctx = reactContext;
 
         receiver = new BroadcastReceiver() {
@@ -46,12 +44,12 @@ public class OrientationModule extends ReactContextBaseJavaModule implements Lif
                 params.putString("orientation", orientationValue);
                 if (ctx.hasActiveCatalystInstance()) {
                     ctx
-                        .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                        .emit("orientationDidChange", params);
+                    .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                    .emit("orientationDidChange", params);
                 }
             }
         };
-	ctx.addLifecycleEventListener(this);
+        ctx.addLifecycleEventListener(this);
     }
 
     @Override
@@ -66,72 +64,82 @@ public class OrientationModule extends ReactContextBaseJavaModule implements Lif
         String orientation = this.getOrientationString(orientationInt);
 
         if (orientation == "null") {
-          callback.invoke(orientationInt, null);
+            callback.invoke(orientationInt, null);
         } else {
-          callback.invoke(null, orientation);
+            callback.invoke(null, orientation);
         }
     }
 
     @ReactMethod
     public void lockToPortrait() {
-        final Activity mActivity = getCurrentActivity();
-        if (mActivity == null) return;
-      mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        final Activity activity = getCurrentActivity();
+        if (activity == null) {
+            return;
+        }
+        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
     @ReactMethod
     public void lockToLandscape() {
-        final Activity mActivity = getCurrentActivity();
-        if (mActivity == null) return;
-      mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+        final Activity activity = getCurrentActivity();
+        if (activity == null) {
+            return;
+        }
+        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
     }
 
     @ReactMethod
     public void lockToLandscapeLeft() {
-        final Activity mActivity = getCurrentActivity();
-        if (mActivity == null) return;
-      mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        final Activity activity = getCurrentActivity();
+        if (activity == null) {
+            return;
+        }
+        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
     }
 
     @ReactMethod
     public void lockToLandscapeRight() {
-        final Activity mActivity = getCurrentActivity();
-        if (mActivity == null) return;
-      mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
+        final Activity activity = getCurrentActivity();
+        if (activity == null) {
+            return;
+        }
+        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
     }
 
     @ReactMethod
     public void unlockAllOrientations() {
-        final Activity mActivity = getCurrentActivity();
-        if (mActivity == null) return;
-      mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+        final Activity activity = getCurrentActivity();
+        if (activity == null) {
+            return;
+        }
+        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
     }
 
     @Override
     public @Nullable Map<String, Object> getConstants() {
-      HashMap<String, Object> constants = new HashMap<String, Object>();
-      int orientationInt = getReactApplicationContext().getResources().getConfiguration().orientation;
+        HashMap<String, Object> constants = new HashMap<String, Object>();
+        int orientationInt = getReactApplicationContext().getResources().getConfiguration().orientation;
 
-      String orientation = this.getOrientationString(orientationInt);
-      if (orientation == "null") {
-        constants.put("initialOrientation", null);
-      } else {
-        constants.put("initialOrientation", orientation);
-      }
+        String orientation = this.getOrientationString(orientationInt);
+        if (orientation == "null") {
+            constants.put("initialOrientation", null);
+        } else {
+            constants.put("initialOrientation", orientation);
+        }
 
-      return constants;
+        return constants;
     }
 
     private String getOrientationString(int orientation) {
-      if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-          return "LANDSCAPE";
-      } else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-          return "PORTRAIT";
-      } else if (orientation == Configuration.ORIENTATION_UNDEFINED) {
-          return "UNKNOWN";
-      } else {
-          return "null";
-      }
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            return "LANDSCAPE";
+        } else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            return "PORTRAIT";
+        } else if (orientation == Configuration.ORIENTATION_UNDEFINED) {
+            return "UNKNOWN";
+        } else {
+            return "null";
+        }
     }
 
     @Override
@@ -165,4 +173,4 @@ public class OrientationModule extends ReactContextBaseJavaModule implements Lif
         catch (java.lang.IllegalArgumentException e) {
             FLog.e(ReactConstants.TAG, "receiver already unregistered", e);
         }}
-}
+    }
