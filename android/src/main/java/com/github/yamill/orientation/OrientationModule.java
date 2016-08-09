@@ -16,12 +16,9 @@ import java.util.Map;
 import javax.annotation.Nullable;
 
 public class OrientationModule extends ReactContextBaseJavaModule {
-    final private Activity mActivity;
 
-    public OrientationModule(ReactApplicationContext reactContext, final Activity activity) {
+    public OrientationModule(ReactApplicationContext reactContext) {
         super(reactContext);
-
-        mActivity = activity;
     }
 
     @Override
@@ -36,22 +33,34 @@ public class OrientationModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void lockToPortrait() {
-        mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        final Activity currentActivity = getCurrentActivity();
+        if (currentActivity != null) {
+            currentActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
     }
 
     @ReactMethod
     public void lockToLandscape() {
-        mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        final Activity currentActivity = getCurrentActivity();
+        if (currentActivity != null) {
+            currentActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
     }
 
     @ReactMethod
     public void lockToSensorLandscape() {
-        mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+        final Activity currentActivity = getCurrentActivity();
+        if (currentActivity != null) {
+            currentActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+        }
     }
 
     @ReactMethod
     public void unlockAllOrientations() {
-        mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+        final Activity currentActivity = getCurrentActivity();
+        if (currentActivity != null) {
+            currentActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+        }
     }
 
     @Override
