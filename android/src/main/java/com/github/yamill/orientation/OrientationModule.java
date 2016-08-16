@@ -26,10 +26,10 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 public class OrientationModule extends ReactContextBaseJavaModule {
     final private Activity mActivity;
 
-    public OrientationModule(ReactApplicationContext reactContext, final Activity activity) {
+    public OrientationModule(ReactApplicationContext reactContext) {
         super(reactContext);
 
-        mActivity = activity;
+        mActivity = getCurrentActivity();
 
         final ReactApplicationContext ctx = reactContext;
 
@@ -51,19 +51,19 @@ public class OrientationModule extends ReactContextBaseJavaModule {
             }
         };
 
-        activity.registerReceiver(receiver, new IntentFilter("onConfigurationChanged"));
+        mActivity.registerReceiver(receiver, new IntentFilter("onConfigurationChanged"));
 
         LifecycleEventListener listener = new LifecycleEventListener() {
             @Override
             public void onHostResume() {
-                activity.registerReceiver(receiver, new IntentFilter("onConfigurationChanged"));
+                mActivity.registerReceiver(receiver, new IntentFilter("onConfigurationChanged"));
             }
 
             @Override
             public void onHostPause() {
                 try
                 {
-                    activity.unregisterReceiver(receiver);
+                    mActivity.unregisterReceiver(receiver);
                 }
                 catch (java.lang.IllegalArgumentException e) {
                     FLog.e(ReactConstants.TAG, "receiver already unregistered", e);
@@ -74,7 +74,7 @@ public class OrientationModule extends ReactContextBaseJavaModule {
             public void onHostDestroy() {
                 try
                 {
-                    activity.unregisterReceiver(receiver);
+                    mActivity.unregisterReceiver(receiver);
                 }
                 catch (java.lang.IllegalArgumentException e) {
                     FLog.e(ReactConstants.TAG, "receiver already unregistered", e);
