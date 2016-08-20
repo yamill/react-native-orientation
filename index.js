@@ -5,6 +5,21 @@ var listeners = {};
 var orientationDidChangeEvent = "orientationDidChange";
 var specificOrientationDidChangeEvent = "specificOrientationDidChange";
 
+var id = 0;
+var META = '__listener_id';
+
+function getKey(listener){
+  if (!listener.hasOwnProperty(META)){
+    if (!Object.isExtensible(listener)) {
+      return 'F';
+    }
+    Object.defineProperty(listener, META, {
+      value: 'L' + ++id,
+    });
+  }
+  return listener[META];
+};
+
 module.exports = {
   getOrientation(cb) {
     Orientation.getOrientation((error,orientation) =>{
@@ -32,30 +47,34 @@ module.exports = {
     Orientation.unlockAllOrientations();
   },
   addOrientationListener(cb) {
-    listeners[cb] = DeviceEventEmitter.addListener(orientationDidChangeEvent,
+    var key = getKey(cb);
+    listeners[key] = DeviceEventEmitter.addListener(orientationDidChangeEvent,
       (body) => {
         cb(body.orientation);
       });
   },
   removeOrientationListener(cb) {
-    if (!listeners[cb]) {
+    var key = getKey(cb);
+    if (!listeners[key]) {
       return;
     }
-    listeners[cb].remove();
-    listeners[cb] = null;
+    listeners[key].remove();
+    listeners[key] = null;
   },
   addSpecificOrientationListener(cb) {
-    listeners[cb] = DeviceEventEmitter.addListener(specificOrientationDidChangeEvent,
+    var key = getKey(cb);
+    listeners[key] = DeviceEventEmitter.addListener(specificOrientationDidChangeEvent,
       (body) => {
         cb(body.specificOrientation);
       });
   },
   removeSpecificOrientationListener(cb) {
-    if (!listeners[cb]) {
+    var key = getKey(cb);
+    if (!listeners[key]) {
       return;
     }
-    listeners[cb].remove();
-    listeners[cb] = null;
+    listeners[key].remove();
+    listeners[key] = null;
   },
   getInitialOrientation() {
     return Orientation.initialOrientation;
