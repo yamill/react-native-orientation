@@ -53,19 +53,19 @@ Consult the React Native documentation on how to [install React Native using Coc
     }
     ```
 
-3. Register module (in MainActivity.java)
+3. Register module (in MainApplication.java)
 
     ```
     import com.github.yamill.orientation.OrientationPackage;  // <--- import
 
-    public class MainActivity extends ReactActivity {
+    public class MainApplication extends Application implements ReactApplication {
       ......
 
       @Override
       protected List<ReactPackage> getPackages() {
           return Arrays.<ReactPackage>asList(
               new MainReactPackage(),
-              new OrientationPackage(this)      <------- Add this
+              new OrientationPackage()      <------- Add this
           );
       }
 

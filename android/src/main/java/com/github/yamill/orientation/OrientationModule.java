@@ -8,9 +8,6 @@ import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.util.Log;
-import java.util.HashMap;
-import java.util.Map;
-import javax.annotation.Nullable;
 
 import com.facebook.common.logging.FLog;
 import com.facebook.react.bridge.Arguments;
@@ -23,17 +20,19 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.common.ReactConstants;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
-public class OrientationModule extends ReactContextBaseJavaModule {
-    final private Activity mActivity;
+import java.util.HashMap;
+import java.util.Map;
 
-    public OrientationModule(ReactApplicationContext reactContext, final Activity activity) {
+import javax.annotation.Nullable;
+
+public class OrientationModule extends ReactContextBaseJavaModule implements LifecycleEventListener{
+    final BroadcastReceiver receiver;
+
+    public OrientationModule(ReactApplicationContext reactContext) {
         super(reactContext);
-
-        mActivity = activity;
-
         final ReactApplicationContext ctx = reactContext;
 
-        final BroadcastReceiver receiver = new BroadcastReceiver() {
+        receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 Configuration newConfig = intent.getParcelableExtra("newConfig");
@@ -45,44 +44,12 @@ public class OrientationModule extends ReactContextBaseJavaModule {
                 params.putString("orientation", orientationValue);
                 if (ctx.hasActiveCatalystInstance()) {
                     ctx
-                        .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                        .emit("orientationDidChange", params);
+                    .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                    .emit("orientationDidChange", params);
                 }
             }
         };
-
-        activity.registerReceiver(receiver, new IntentFilter("onConfigurationChanged"));
-
-        LifecycleEventListener listener = new LifecycleEventListener() {
-            @Override
-            public void onHostResume() {
-                activity.registerReceiver(receiver, new IntentFilter("onConfigurationChanged"));
-            }
-
-            @Override
-            public void onHostPause() {
-                try
-                {
-                    activity.unregisterReceiver(receiver);
-                }
-                catch (java.lang.IllegalArgumentException e) {
-                    FLog.e(ReactConstants.TAG, "receiver already unregistered", e);
-                }
-            }
-
-            @Override
-            public void onHostDestroy() {
-                try
-                {
-                    activity.unregisterReceiver(receiver);
-                }
-                catch (java.lang.IllegalArgumentException e) {
-                    FLog.e(ReactConstants.TAG, "receiver already unregistered", e);
-                }
-            }
-        };
-
-        reactContext.addLifecycleEventListener(listener);
+        ctx.addLifecycleEventListener(this);
     }
 
     @Override
@@ -97,61 +64,113 @@ public class OrientationModule extends ReactContextBaseJavaModule {
         String orientation = this.getOrientationString(orientationInt);
 
         if (orientation == "null") {
-          callback.invoke(orientationInt, null);
+            callback.invoke(orientationInt, null);
         } else {
-          callback.invoke(null, orientation);
+            callback.invoke(null, orientation);
         }
     }
 
     @ReactMethod
     public void lockToPortrait() {
-      mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        final Activity activity = getCurrentActivity();
+        if (activity == null) {
+            return;
+        }
+        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
     @ReactMethod
     public void lockToLandscape() {
-      mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+        final Activity activity = getCurrentActivity();
+        if (activity == null) {
+            return;
+        }
+        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
     }
 
     @ReactMethod
     public void lockToLandscapeLeft() {
-      mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        final Activity activity = getCurrentActivity();
+        if (activity == null) {
+            return;
+        }
+        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
     }
 
     @ReactMethod
     public void lockToLandscapeRight() {
-      mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
+        final Activity activity = getCurrentActivity();
+        if (activity == null) {
+            return;
+        }
+        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
     }
 
     @ReactMethod
     public void unlockAllOrientations() {
-      mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+        final Activity activity = getCurrentActivity();
+        if (activity == null) {
+            return;
+        }
+        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
     }
 
     @Override
     public @Nullable Map<String, Object> getConstants() {
-      HashMap<String, Object> constants = new HashMap<String, Object>();
-      int orientationInt = getReactApplicationContext().getResources().getConfiguration().orientation;
+        HashMap<String, Object> constants = new HashMap<String, Object>();
+        int orientationInt = getReactApplicationContext().getResources().getConfiguration().orientation;
 
-      String orientation = this.getOrientationString(orientationInt);
-      if (orientation == "null") {
-        constants.put("initialOrientation", null);
-      } else {
-        constants.put("initialOrientation", orientation);
-      }
+        String orientation = this.getOrientationString(orientationInt);
+        if (orientation == "null") {
+            constants.put("initialOrientation", null);
+        } else {
+            constants.put("initialOrientation", orientation);
+        }
 
-      return constants;
+        return constants;
     }
 
     private String getOrientationString(int orientation) {
-      if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-          return "LANDSCAPE";
-      } else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-          return "PORTRAIT";
-      } else if (orientation == Configuration.ORIENTATION_UNDEFINED) {
-          return "UNKNOWN";
-      } else {
-          return "null";
-      }
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            return "LANDSCAPE";
+        } else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            return "PORTRAIT";
+        } else if (orientation == Configuration.ORIENTATION_UNDEFINED) {
+            return "UNKNOWN";
+        } else {
+            return "null";
+        }
     }
-}
+
+    @Override
+    public void onHostResume() {
+        final Activity activity = getCurrentActivity();
+
+        assert activity != null;
+        activity.registerReceiver(receiver, new IntentFilter("onConfigurationChanged"));
+    }
+    @Override
+    public void onHostPause() {
+        final Activity activity = getCurrentActivity();
+        if (activity == null) return;
+        try
+        {
+            activity.unregisterReceiver(receiver);
+        }
+        catch (java.lang.IllegalArgumentException e) {
+            FLog.e(ReactConstants.TAG, "receiver already unregistered", e);
+        }
+    }
+
+    @Override
+    public void onHostDestroy() {
+        final Activity activity = getCurrentActivity();
+        if (activity == null) return;
+        try
+        {
+            activity.unregisterReceiver(receiver);
+        }
+        catch (java.lang.IllegalArgumentException e) {
+            FLog.e(ReactConstants.TAG, "receiver already unregistered", e);
+        }}
+    }
