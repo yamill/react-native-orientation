@@ -120,9 +120,12 @@ Implement onConfigurationChanged method (in MainActivity.java)
 ## Usage
 
 Whenever you want to use it within React Native code now you can:
-`var Orientation = require('react-native-orientation');`
 
 ```javascript
+  var Orientation = require('react-native-orientation');
+  
+  ...
+
   _orientationDidChange: function(orientation) {
     if (orientation == 'LANDSCAPE') {
       //do something with landscape layout
