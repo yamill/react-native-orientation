@@ -74,6 +74,16 @@ Consult the React Native documentation on how to [install React Native using Coc
     }
     ```
 
+4. Prevent activity restart on orientation changes (in AndroidManifest.xml)
+
+  ```
+  <activity
+    ...
+    android:configChanges="orientation|screenSize"
+    ...
+  >
+  ```
+
 ### Configuration
 
 #### iOS
