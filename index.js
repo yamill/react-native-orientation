@@ -78,5 +78,8 @@ module.exports = {
   },
   getInitialOrientation() {
     return Orientation.initialOrientation;
+  },
+  getInitialSpecificOrientation() {
+    return Orientation.initialSpecificOrientation;
   }
 }
