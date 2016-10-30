@@ -160,6 +160,51 @@ Whenever you want to use it within React Native code now you can:
   }
 ```
 
+## Easy usage with redux
+
+1. Init the orientation to handle change events using your redux store :
+
+	```javascript
+	import Orientation from "react-native-orientation";
+	```
+	
+	```javascript
+	const Store = initializeStore();
+	
+	class YOUR_COMPONENT extends Component {
+	  constructor(props) {
+	    super(props);
+	
+	    Orientation.init(Store);
+	  }
+	}
+	```
+
+2. Add the reducer to the combined reducers to make it mappable to your components' props :
+
+	```javascript
+	import {OrientationReducer} from "react-native-orientation";
+	```
+	
+	```javascript
+	export default combineReducers({
+	  // ... your other reducers
+	  orientation: OrientationReducer
+	})
+	```
+
+3. Finaly, use it as the normal redux way by mapping it to your component props :
+
+	```javascript
+	function mapStateToProps(state) {
+	  return {
+	    orientation: state.orientation.orientation
+	  };
+	}
+	
+	export default connect(mapStateToProps, {})(YOUR_COMPONENT);
+	```
+
 ## Events
 
 - `addOrientationListener(function(orientation))`
