@@ -57,7 +57,11 @@ Consult the React Native documentation on how to [install React Native using Coc
 
     ```
     import com.github.yamill.orientation.OrientationPackage;  // <--- import
-
+    import com.facebook.react.ReactPackage;  // <--- import
+    import com.facebook.react.shell.MainReactPackage;  // <--- import
+    import java.util.List;  // <--- import
+    import java.util.Arrays;  // <--- import
+    
     public class MainApplication extends Application implements ReactApplication {
       ......
 
