@@ -1,23 +1,13 @@
-## react-native-orientation
-Listen to device orientation changes in react-native and set preferred orientation on screen to screen basis.
+## React Native Orientation
+Listen to device orientation changes in React Native applications and set preferred orientation on a screen basis.
 
 ### Installation
 
-#### via rnpm
-
-Run `rnpm install react-native-orientation`
-
-> Note: rnpm will install and link the library automatically.
-
-#### via npm
-
 Run `npm install react-native-orientation --save`
 
-### Linking
+### Linking Native Dependencies
 
-#### Using rnpm (iOS + Android)
-
-`rnpm link react-native-orientation`
+Run `react-native link react-native-orientation`
 
 #### Using [CocoaPods](https://cocoapods.org) (iOS Only)
 
