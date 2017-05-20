@@ -5,6 +5,11 @@ var listeners = {};
 var orientationDidChangeEvent = "orientationDidChange";
 var specificOrientationDidChangeEvent = "specificOrientationDidChange";
 
+const ORIENTATION_CHANGED = "_ORIENTATION_CHANGED";
+const INITIAL_STATE = {
+    orientation: null
+};
+
 var id = 0;
 var META = '__listener_id';
 
@@ -21,6 +26,35 @@ function getKey(listener){
 };
 
 module.exports = {
+  OrientationReducer(state = INITIAL_STATE, action) {
+    switch (action.type) {
+      case ORIENTATION_CHANGED:
+        return {
+          ...state,
+          orientation: action.orientation
+        }
+    }
+    return state;
+  },
+
+  init(s) {
+    const handler = (orientation) => {
+      s && s.dispatch({
+        type: ORIENTATION_CHANGED,
+        orientation: orientation
+      });
+    };
+
+    Orientation.getOrientation((error, orientation) => {
+      handler(orientation);
+    });
+
+    var key = getKey(handler);
+    listeners[key] = DeviceEventEmitter.addListener(orientationDidChangeEvent, (body) => {
+      handler(body.orientation);
+    });
+  },
+
   getOrientation(cb) {
     Orientation.getOrientation((error,orientation) =>{
       cb(error, orientation);
