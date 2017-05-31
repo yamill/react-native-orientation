@@ -4,7 +4,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#ifdef __has_include(<React/RCTBridgeModule.h>)
+#if __has_include(<React/RCTBridgeModule.h>)
 #import <React/RCTBridgeModule.h>
 #else
 #import "RCTBridgeModule.h"
