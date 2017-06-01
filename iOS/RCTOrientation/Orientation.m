@@ -3,7 +3,7 @@
 //
 
 #import "Orientation.h"
-#ifdef __has_include(<React/RCTEventDispatcher.h>)
+#if __has_include(<React/RCTEventDispatcher.h>)
 #import <React/RCTEventDispatcher.h>
 #else
 #import "RCTEventDispatcher.h.h"
