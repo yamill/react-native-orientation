@@ -77,6 +77,8 @@ react-native link react-native-orientation
 
 **iOS**
 
+*Objective-C:*
+
 Add the following to your project's `AppDelegate.m`:
 
 ```objc
@@ -91,6 +93,23 @@ Add the following to your project's `AppDelegate.m`:
   }
 
 @end
+```
+
+*Swift:*
+
+Add the following to your project's 'AppDelegate.swift'
+
+```
+import react_native_orientation // <--- import
+
+class AppDelegate {
+  // ...
+      func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        return Orientation.getOrientation()
+    }
+
+}
+
 ```
 
 **Android**
