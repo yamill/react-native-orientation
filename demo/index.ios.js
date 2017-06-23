@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {
+  Alert,
   AppRegistry,
   StyleSheet,
   Text,
@@ -9,19 +10,39 @@ import {
 
 import Orientation from 'react-native-orientation';
 
-class demo extends Component {
+class Demo extends Component {
   constructor() {
     super();
-    const init = Orientation.getInitialOrientation();
-    this.state = {
-      init,
-      or: init,
-      sor: init,
-    };
+
     this._updateOrientation = this._updateOrientation.bind(this);
-    Orientation.addOrientationListener(this._updateOrientation);
     this._updateSpecificOrientation = this._updateSpecificOrientation.bind(this);
+  }
+
+  componentWillMount() {
+    const init = Orientation.getInitialOrientation();
+    this.setState({ init, or: init, sor: init });
+  }
+
+  componentDidMount() {
+    Orientation.addOrientationListener(this._updateOrientation);
     Orientation.addSpecificOrientationListener(this._updateSpecificOrientation);
+  }
+
+  componentWillUnmount() {
+    Orientation.removeOrientationListener(this._updateOrientation);
+    Orientation.removeSpecificOrientationListener(this._updateSpecificOrientation);
+  }
+
+  _getOrientation() {
+    Orientation.getOrientation((err, orientation) => {
+      Alert.alert(`Orientation is ${orientation}`);
+    });
+  }
+
+  _getSpecificOrientation() {
+    Orientation.getSpecificOrientation((err, orientation) => {
+      Alert.alert(`Specific orientation is ${orientation}`);
+    });
   }
 
   _updateOrientation(or) {
@@ -90,6 +111,24 @@ class demo extends Component {
             </Text>
           </TouchableOpacity>
         </View>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            onPress={this._getOrientation}
+            style={styles.button}
+          >
+            <Text style={styles.instructions}>
+              Get Orientation
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={this._getSpecificOrientation}
+            style={styles.button}
+          >
+            <Text style={styles.instructions}>
+              Get Specific Orientation
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -127,4 +166,4 @@ const styles = StyleSheet.create({
   }
 });
 
-AppRegistry.registerComponent('demo', () => demo);
+AppRegistry.registerComponent('demo', () => Demo);
