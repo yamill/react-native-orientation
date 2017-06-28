@@ -1,16 +1,16 @@
 {
-	"name": "demo",
-	"version": "2.0.0",
-	"private": true,
-	"scripts": {
-		"start": "node node_modules/react-native/local-cli/cli.js start"
-	},
-	"dependencies": {
-		"react": "16.0.0-alpha.12",
-		"react-native": "^0.45.1",
-		"react-native-orientation": "file:n.."
-	},
-	"devDependencies": {
-		"babel-preset-react-native": "^2.0.0"
-	}
+  "name": "ReactNativeOrientationDemo",
+  "version": "2.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start"
+  },
+  "dependencies": {
+    "react": "16.0.0-alpha.12",
+    "react-native": "^0.45.1",
+    "react-native-orientation": "file:.."
+  },
+  "devDependencies": {
+    "babel-preset-react-native": "^2.0.0"
+  }
 }
