@@ -11,16 +11,13 @@ import {
 import Orientation from 'react-native-orientation';
 
 class Demo extends Component {
-  constructor() {
-    super();
-
-    this._updateOrientation = this._updateOrientation.bind(this);
-    this._updateSpecificOrientation = this._updateSpecificOrientation.bind(this);
-  }
-
   componentWillMount() {
     const init = Orientation.getInitialOrientation();
-    this.setState({ init, or: init, sor: init });
+    this.setState({
+      init,
+      orientation: init,
+      specificOrientation: init
+    });
   }
 
   componentDidMount() {
@@ -45,16 +42,16 @@ class Demo extends Component {
     });
   }
 
-  _updateOrientation(or) {
-    this.setState({ or });
-  }
+  _updateOrientation = (orientation) => {
+    this.setState({ orientation });
+  };
 
-  _updateSpecificOrientation(sor) {
-    this.setState({ sor });
-  }
+  _updateSpecificOrientation = (specificOrientation) => {
+    this.setState({ specificOrientation });
+  };
 
   render() {
-    const { init, or, sor} = this.state;
+    const { init, orientation, specificOrientation} = this.state;
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
@@ -64,10 +61,10 @@ class Demo extends Component {
           {`Initial Orientation: ${init}`}
         </Text>
         <Text style={styles.instructions}>
-          {`Current Orientation: ${or}`}
+          {`Current Orientation: ${orientation}`}
         </Text>
         <Text style={styles.instructions}>
-          {`Specific Orientation: ${sor}`}
+          {`Specific Orientation: ${specificOrientation}`}
         </Text>
         <TouchableOpacity
           onPress={Orientation.unlockAllOrientations}
