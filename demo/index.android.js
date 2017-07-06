@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {
+  Alert,
   AppRegistry,
   StyleSheet,
   Text,
@@ -9,24 +10,35 @@ import {
 
 import Orientation from 'react-native-orientation';
 
-class demo extends Component {
-  constructor() {
-    super();
+class Demo extends Component {
+  componentWillMount() {
     const init = Orientation.getInitialOrientation();
     this.state = {
       init,
-      or: init,
+      orientation: init
     };
-    this._updateOrientation = this._updateOrientation.bind(this);
+  }
+
+  componentDidMount() {
     Orientation.addOrientationListener(this._updateOrientation);
   }
 
-  _updateOrientation(or) {
-    this.setState({ or });
+  componentWillUnmount() {
+    Orientation.removeOrientationListener(this._updateOrientation);
   }
 
+  _getOrientation() {
+    Orientation.getOrientation((err, orientation) => {
+      Alert.alert(`Orientation is ${orientation}`);
+    });
+  }
+
+  _updateOrientation = (orientation) => {
+    this.setState({ orientation });
+  };
+
   render() {
-    const { init, or} = this.state;
+    const { init, orientation} = this.state;
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
@@ -36,7 +48,7 @@ class demo extends Component {
           {`Initial Orientation: ${init}`}
         </Text>
         <Text style={styles.instructions}>
-          {`Current Orientation: ${or}`}
+          {`Current Orientation: ${orientation}`}
         </Text>
         <TouchableOpacity
           onPress={Orientation.unlockAllOrientations}
@@ -54,14 +66,42 @@ class demo extends Component {
             Lock To Portrait
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={Orientation.lockToLandscape}
-          style={styles.button}
-        >
-          <Text style={styles.instructions}>
-            Lock To Landscape
-          </Text>
-        </TouchableOpacity>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            onPress={Orientation.lockToLandscapeLeft}
+            style={styles.button}
+          >
+            <Text style={styles.instructions}>
+              Lock To Left
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={Orientation.lockToLandscape}
+            style={styles.button}
+          >
+            <Text style={styles.instructions}>
+              Lock To Landscape
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={Orientation.lockToLandscapeRight}
+            style={styles.button}
+          >
+            <Text style={styles.instructions}>
+              Lock To Right
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            onPress={this._getOrientation}
+            style={styles.button}
+          >
+            <Text style={styles.instructions}>
+              Get Orientation
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -84,6 +124,11 @@ const styles = StyleSheet.create({
     color: '#333333',
     marginBottom: 5,
   },
+  buttonContainer: {
+    flex: 0,
+    flexDirection: 'row',
+    justifyContent: 'space-around'
+  },
   button: {
     padding: 5,
     margin: 5,
@@ -94,4 +139,4 @@ const styles = StyleSheet.create({
   }
 });
 
-AppRegistry.registerComponent('demo', () => demo);
+AppRegistry.registerComponent('demo', () => Demo);

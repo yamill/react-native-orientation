@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {
+  Alert,
   AppRegistry,
   StyleSheet,
   Text,
@@ -9,31 +10,48 @@ import {
 
 import Orientation from 'react-native-orientation';
 
-class demo extends Component {
-  constructor() {
-    super();
+class Demo extends Component {
+  componentWillMount() {
     const init = Orientation.getInitialOrientation();
-    this.state = {
+    this.setState({
       init,
-      or: init,
-      sor: init,
-    };
-    this._updateOrientation = this._updateOrientation.bind(this);
+      orientation: init,
+      specificOrientation: init
+    });
+  }
+
+  componentDidMount() {
     Orientation.addOrientationListener(this._updateOrientation);
-    this._updateSpecificOrientation = this._updateSpecificOrientation.bind(this);
     Orientation.addSpecificOrientationListener(this._updateSpecificOrientation);
   }
 
-  _updateOrientation(or) {
-    this.setState({ or });
+  componentWillUnmount() {
+    Orientation.removeOrientationListener(this._updateOrientation);
+    Orientation.removeSpecificOrientationListener(this._updateSpecificOrientation);
   }
 
-  _updateSpecificOrientation(sor) {
-    this.setState({ sor });
+  _getOrientation() {
+    Orientation.getOrientation((err, orientation) => {
+      Alert.alert(`Orientation is ${orientation}`);
+    });
   }
+
+  _getSpecificOrientation() {
+    Orientation.getSpecificOrientation((err, orientation) => {
+      Alert.alert(`Specific orientation is ${orientation}`);
+    });
+  }
+
+  _updateOrientation = (orientation) => {
+    this.setState({ orientation });
+  };
+
+  _updateSpecificOrientation = (specificOrientation) => {
+    this.setState({ specificOrientation });
+  };
 
   render() {
-    const { init, or, sor} = this.state;
+    const { init, orientation, specificOrientation} = this.state;
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
@@ -43,10 +61,10 @@ class demo extends Component {
           {`Initial Orientation: ${init}`}
         </Text>
         <Text style={styles.instructions}>
-          {`Current Orientation: ${or}`}
+          {`Current Orientation: ${orientation}`}
         </Text>
         <Text style={styles.instructions}>
-          {`Specific Orientation: ${sor}`}
+          {`Specific Orientation: ${specificOrientation}`}
         </Text>
         <TouchableOpacity
           onPress={Orientation.unlockAllOrientations}
@@ -90,6 +108,24 @@ class demo extends Component {
             </Text>
           </TouchableOpacity>
         </View>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            onPress={this._getOrientation}
+            style={styles.button}
+          >
+            <Text style={styles.instructions}>
+              Get Orientation
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={this._getSpecificOrientation}
+            style={styles.button}
+          >
+            <Text style={styles.instructions}>
+              Get Specific Orientation
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -127,4 +163,4 @@ const styles = StyleSheet.create({
   }
 });
 
-AppRegistry.registerComponent('demo', () => demo);
+AppRegistry.registerComponent('demo', () => Demo);
