@@ -1,7 +1,7 @@
 {
   "name": "react-native-orientation",
-  "version": "1.17.0",
-  "description": "Listen to device orientation changes in React Native applications and programmatically set preferred orientations on a screen-to-screen basis",
+  "version": "2.0.0",
+  "description": "Listen to device orientation changes in React Native applications and programmatically set preferred orientations on a per screen basis",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

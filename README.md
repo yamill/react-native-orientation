@@ -1,19 +1,12 @@
 ## React Native Orientation
 [![npm version](https://badge.fury.io/js/react-native-orientation.svg)](https://badge.fury.io/js/react-native-orientation)
 
-Listen to device orientation changes in React Native applications and set preferred orientation on a per screen basis. Works on both Android and iOS.
-
-## NOTE - PLEASE READ
-**The current version of this package on NPM's registry is not updated**. In order to use this package with RN apps on versions 0.40+ you must point your package to the `master` branch of this repository or install it like so:
-
-```
-npm install --save react-native-orientation@git+https://github.com/yamill/react-native-orientation.git
-```
+Listen to device orientation changes in React Native applications and programmatically set preferred orientation on a per screen basis. Works on both Android and iOS.
 
 ## Installing
 
 ```
-npm install --save react-native-orientation@git+https://github.com/yamill/react-native-orientation.git
+npm install react-native-orientation --save
 ```
 
 ## Linking Native Dependencies
