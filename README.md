@@ -201,8 +201,8 @@ addOrientationWithScreenSizeListener((notification) => {});
   - `PORTRAIT`
   - `PORTRAITUPSIDEDOWN`
   - `UNKNOWN`
-- `screenWidth` with the screen's width in points (iOS) or dp (Android).
-- `screenHeight` with the screen's height in points (iOS) or dp (Android).
+- `screenWidth` with the screen's width for the new orientation in points (iOS)/dp (Android).
+- `screenHeight` with the screen's height for the new orientation in points (iOS)/dp (Android).
 
 ```javascript
 removeOrientationWithScreenSizeListener((notification) => {});
