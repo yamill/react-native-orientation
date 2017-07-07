@@ -36,13 +36,21 @@ static UIInterfaceOrientationMask _orientation = UIInterfaceOrientationMaskAllBu
 
 - (void)deviceOrientationDidChange:(NSNotification *)notification
 {
-  UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
-  [self.bridge.eventDispatcher sendDeviceEventWithName:@"specificOrientationDidChange"
-                                              body:@{@"specificOrientation": [self getSpecificOrientationStr:orientation]}];
+    // One async loop required otherwise the width/height values may be for the previous orientation.
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+        CGSize mainScreenBoundsSize = [UIScreen mainScreen].bounds.size;
 
-  [self.bridge.eventDispatcher sendDeviceEventWithName:@"orientationDidChange"
-                                              body:@{@"orientation": [self getOrientationStr:orientation]}];
+        [self.bridge.eventDispatcher sendDeviceEventWithName:@"specificOrientationDidChange"
+                                                        body:@{@"specificOrientation": [self getSpecificOrientationStr:orientation],
+                                                               @"screenWidth": @(mainScreenBoundsSize.width),
+                                                               @"screenHeight": @(mainScreenBoundsSize.height)}];
 
+        [self.bridge.eventDispatcher sendDeviceEventWithName:@"orientationDidChange"
+                                                        body:@{@"orientation": [self getOrientationStr:orientation],
+                                                               @"screenWidth": @(mainScreenBoundsSize.width),
+                                                               @"screenHeight": @(mainScreenBoundsSize.height)}];
+    });
 }
 
 - (NSString *)getOrientationStr: (UIDeviceOrientation)orientation {

@@ -74,6 +74,23 @@ module.exports = {
     listeners[key] = null;
   },
 
+  addOrientationWithScreenSizeListener(cb) {
+    var key = getKey(cb);
+    listeners[key] = DeviceEventEmitter.addListener(orientationDidChangeEvent,
+      (body) => {
+        cb(body);
+      });
+  },
+
+  removeOrientationWithScreenSizeListener(cb) {
+    var key = getKey(cb);
+    if (!listeners[key]) {
+      return;
+    }
+    listeners[key].remove();
+    listeners[key] = null;
+  },
+
   addSpecificOrientationListener(cb) {
     var key = getKey(cb);
 

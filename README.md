@@ -192,6 +192,23 @@ removeOrientationListener((orientation) => {});
 ```
 
 ```javascript
+addOrientationWithScreenSizeListener((notification) => {});
+```
+
+`notification` will return:
+- `orientation` with one of the following values:
+  - `LANDSCAPE`
+  - `PORTRAIT`
+  - `PORTRAITUPSIDEDOWN`
+  - `UNKNOWN`
+- `screenWidth` with the screen's width in points (iOS) or dp (Android).
+- `screenHeight` with the screen's height in points (iOS) or dp (Android).
+
+```javascript
+removeOrientationWithScreenSizeListener((notification) => {});
+```
+
+```javascript
 addSpecificOrientationListener((specificOrientation) => {});
 ```
 
