@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.util.Log;
+import android.view.OrientationEventListener;
 
 import com.facebook.common.logging.FLog;
 import com.facebook.react.bridge.Arguments;
@@ -26,11 +27,50 @@ import java.util.Map;
 import javax.annotation.Nullable;
 
 public class OrientationModule extends ReactContextBaseJavaModule implements LifecycleEventListener{
-    final BroadcastReceiver receiver;
+    private final int SPECIFIC_ORIENTATION_OFFSET = 10;
+    private final BroadcastReceiver receiver;
 
-    public OrientationModule(ReactApplicationContext reactContext) {
+    private String currentSpecificOrientation = "UNKNOWN";
+
+    OrientationModule(ReactApplicationContext reactContext) {
         super(reactContext);
         final ReactApplicationContext ctx = reactContext;
+
+        final OrientationEventListener specificOrientationListener = new OrientationEventListener(ctx) {
+            @Override
+            public void onOrientationChanged(int orientation) {
+                String specificOrientation = "UNKNOWN";
+
+                if (Math.abs(orientation) < SPECIFIC_ORIENTATION_OFFSET) {
+                    specificOrientation = "PORTRAIT";
+                } else if (Math.abs(orientation - 90) < SPECIFIC_ORIENTATION_OFFSET) {
+                    specificOrientation = "LANDSCAPE-RIGHT";
+                } else if (Math.abs(orientation - 180) < SPECIFIC_ORIENTATION_OFFSET) {
+                    specificOrientation = "PORTRAITUPSIDEDOWN";
+                } else if (Math.abs(orientation - 270) < SPECIFIC_ORIENTATION_OFFSET) {
+                    specificOrientation = "LANDSCAPE-LEFT";
+                } else if (Math.abs(orientation - 360) < SPECIFIC_ORIENTATION_OFFSET) {
+                    specificOrientation = "PORTRAIT";
+                }
+
+                if (!specificOrientation.equals(currentSpecificOrientation)) {
+                    currentSpecificOrientation = specificOrientation;
+
+                    final WritableMap params = Arguments.createMap();
+                    params.putString("specificOrientation", specificOrientation);
+
+                    if (ctx.hasActiveCatalystInstance()) {
+                        ctx.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("specificOrientationDidChange", params);
+                    }
+                }
+            }
+        };
+
+        if (specificOrientationListener.canDetectOrientation()) {
+            specificOrientationListener.enable();
+        } else {
+            specificOrientationListener.disable();
+        }
 
         receiver = new BroadcastReceiver() {
             @Override
@@ -49,6 +89,7 @@ public class OrientationModule extends ReactContextBaseJavaModule implements Lif
                 }
             }
         };
+
         ctx.addLifecycleEventListener(this);
     }
 
@@ -68,6 +109,11 @@ public class OrientationModule extends ReactContextBaseJavaModule implements Lif
         } else {
             callback.invoke(null, orientation);
         }
+    }
+
+    @ReactMethod
+    public void getSpecificOrientation(Callback callback) {
+        callback.invoke(null, currentSpecificOrientation);
     }
 
     @ReactMethod
@@ -152,6 +198,7 @@ public class OrientationModule extends ReactContextBaseJavaModule implements Lif
         }
         activity.registerReceiver(receiver, new IntentFilter("onConfigurationChanged"));
     }
+
     @Override
     public void onHostPause() {
         final Activity activity = getCurrentActivity();
