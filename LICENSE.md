@@ -1,3 +1,5 @@
+## ISC License
+
 Copyright 2017 React Native Orientation
 
 Permission to use, copy, modify, and/or distribute this software for any purpose with or
