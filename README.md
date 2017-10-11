@@ -17,6 +17,8 @@ npm install react-native-orientation --save
 react-native link react-native-orientation
 ```
 
+Please note that you **still need to manually configure** a couple files even when using automatic linking. Please see the ['Configuration'](#configuration) section below. You will also **need to restart your simulator** before the package will work properly.
+
 ### Manual Linking
 
 **iOS**
