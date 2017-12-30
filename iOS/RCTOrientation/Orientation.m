@@ -34,6 +34,11 @@ static UIInterfaceOrientationMask _orientation = UIInterfaceOrientationMaskAllBu
   [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
++ (BOOL)requiresMainQueueSetup
+{
+  return YES;
+}
+
 - (void)deviceOrientationDidChange:(NSNotification *)notification
 {
   UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
