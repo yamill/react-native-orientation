@@ -1,10 +1,13 @@
 {
   "name": "react-native-orientation",
-  "version": "3.1.0",
+  "version": "4.0.0",
   "description": "Listen to device orientation changes in React Native applications and programmatically set preferred orientations on a per screen basis",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "preversion": "",
+    "build": "babel src -d lib",
+    "version": "npm run build && git add -A lib",
+    "postversion": "git push && git push --tags && rm -rf build/temp"
   },
   "keywords": [
     "orientation",
@@ -18,13 +21,13 @@
   "author": "Yamill Vallecillo <yamill@gmail.com> (github.com/yamill)",
   "contributors": [
     {
-      "name" : "André Neves",
-      "email" : "@andrerfneves",
-      "url" : "https://andrenev.es"
+      "name": "André Neves",
+      "email": "@andrerfneves",
+      "url": "https://andrenev.es"
     },
     {
-      "name" : "Aleksi Pousar",
-      "email" : "aleksi1578@msn.com"
+      "name": "Aleksi Pousar",
+      "email": "aleksi1578@msn.com"
     }
   ],
   "license": "ISC",
@@ -43,5 +46,14 @@
     "ios": {
       "project": "iOS/RCTOrientation.xcodeproj"
     }
+  },
+  "babel": {
+    "presets": [
+      "latest"
+    ]
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-latest": "^6.24.1"
   }
 }
