@@ -112,7 +112,7 @@ public class OrientationModule extends ReactContextBaseJavaModule implements Lif
         if (activity == null) {
             return;
         }
-        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
     }
 
     @Override
