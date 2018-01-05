@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2100958B1F8FEAC100724E6A /* Orientation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 27F5D7EE1D0BC955003F92DE /* Orientation.h */; };
+		210095911F8FED7E00724E6A /* Orientation.h in Headers */ = {isa = PBXBuildFile; fileRef = 27F5D7EE1D0BC955003F92DE /* Orientation.h */; };
 		27F5D7F01D0BC955003F92DE /* Orientation.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F5D7EF1D0BC955003F92DE /* Orientation.m */; };
 /* End PBXBuildFile section */
 
@@ -17,6 +19,7 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
+				2100958B1F8FEAC100724E6A /* Orientation.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -66,6 +69,17 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		210095901F8FED7100724E6A /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				210095911F8FED7E00724E6A /* Orientation.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
 		58B511DA1A9E6C8500147676 /* RCTOrientation */ = {
 			isa = PBXNativeTarget;
@@ -73,6 +87,7 @@
 			buildPhases = (
 				58B511D71A9E6C8500147676 /* Sources */,
 				58B511D81A9E6C8500147676 /* Frameworks */,
+				210095901F8FED7100724E6A /* Headers */,
 				58B511D91A9E6C8500147676 /* CopyFiles */,
 			);
 			buildRules = (
