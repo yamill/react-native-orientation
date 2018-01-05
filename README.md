@@ -82,13 +82,10 @@ Add the following to your project's `AppDelegate.m`:
 
   // ...
 
-  - (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
-    while ([[UIDevice currentDevice] isGeneratingDeviceOrientationNotifications]) {
-        [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
-    }
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+  return [Orientation getOrientation];
+}
   
-    return [Orientation getOrientation];
-  }
 
 @end
 ```
