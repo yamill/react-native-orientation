@@ -5,8 +5,10 @@
 #import "Orientation.h"
 #if __has_include(<React/RCTEventDispatcher.h>)
 #import <React/RCTEventDispatcher.h>
+#import <React/RCTUtils.h>
 #else
 #import "RCTEventDispatcher.h"
+#import "RCTUtils.h"
 #endif
 
 @implementation Orientation
@@ -68,7 +70,7 @@ static UIInterfaceOrientationMask _orientation = UIInterfaceOrientationMaskAllBu
 
     default:
       // orientation is unknown, we try to get the status bar orientation
-      switch ([[UIApplication sharedApplication] statusBarOrientation]) {
+      switch ([RCTSharedApplication() statusBarOrientation]) {
         case UIInterfaceOrientationPortrait:
           orientationStr = @"PORTRAIT";
           break;
@@ -112,7 +114,7 @@ static UIInterfaceOrientationMask _orientation = UIInterfaceOrientationMaskAllBu
 
     default:
       // orientation is unknown, we try to get the status bar orientation
-      switch ([[UIApplication sharedApplication] statusBarOrientation]) {
+      switch ([RCTSharedApplication() statusBarOrientation]) {
         case UIInterfaceOrientationPortrait:
           orientationStr = @"PORTRAIT";
           break;
