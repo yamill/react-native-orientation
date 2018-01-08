@@ -38,7 +38,9 @@ module.exports = {
   lockToPortrait() {
     Orientation.lockToPortrait();
   },
-
+  lockToSensorPortrait() {
+    Orientation.lockToSensorPortrait();
+  },
   lockToLandscape() {
     Orientation.lockToLandscape();
   },
