@@ -42,6 +42,8 @@ public class OrientationModule extends ReactContextBaseJavaModule implements Lif
 
                 WritableMap params = Arguments.createMap();
                 params.putString("orientation", orientationValue);
+                params.putInt("screenWidth", newConfig.screenWidthDp);
+                params.putInt("screenHeight", newConfig.screenHeightDp);
                 if (ctx.hasActiveCatalystInstance()) {
                     ctx
                     .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)

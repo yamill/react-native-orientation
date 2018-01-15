@@ -196,6 +196,29 @@ removeOrientationListener((orientation) => {});
 ```
 
 ```javascript
+addOrientationWithScreenSizeListener((notification) => {});
+```
+
+Often React Native's `Dimensions.get('window')` width and height values are not correct for the new orientation at the moment when the orientation listeners are triggered. 
+
+This listener will return orientation, screenWidth and screenHeight when orientation changes. The screen width/height are from the native OS rather than what React Native reports.
+
+Use it if you need to re-layout your UI for the new orientation when you are using dimension values relative to the screen's width/height. i.e. Centering a dynamically-sized modal in a view.
+
+`notification` will return:
+- `orientation` with one of the following values:
+  - `LANDSCAPE`
+  - `PORTRAIT`
+  - `PORTRAITUPSIDEDOWN`
+  - `UNKNOWN`
+- `screenWidth` with the screen's width for the new orientation in points (iOS)/dp (Android).
+- `screenHeight` with the screen's height for the new orientation in points (iOS)/dp (Android).
+
+```javascript
+removeOrientationWithScreenSizeListener((notification) => {});
+```
+
+```javascript
 addSpecificOrientationListener((specificOrientation) => {});
 ```
 
