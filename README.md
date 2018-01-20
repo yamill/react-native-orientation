@@ -149,6 +149,7 @@ export default class AppScreen extends Component {
     // Orientation.unlockAllOrientations();
 
     Orientation.addOrientationListener(this._orientationDidChange);
+    Orientation.addSensorBaseOrientationListener(this._sensorBaseOrientationChange);
   },
 
   _orientationDidChange = (orientation) => {
@@ -159,6 +160,9 @@ export default class AppScreen extends Component {
     }
   },
 
+  _sensorBaseOrientationChange = (orientation) => {
+    console.log(orientation);
+  }
   componentWillUnmount() {
     Orientation.getOrientation((err, orientation) => {
       console.log(`Current Device Orientation: ${orientation}`);
