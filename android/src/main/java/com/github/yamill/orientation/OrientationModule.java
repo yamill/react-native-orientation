@@ -246,15 +246,15 @@ public class OrientationModule extends ReactContextBaseJavaModule implements Lif
                             sendEvent(context, "sensorOrientationChangeEvent", map);
                             break;
                         case LANDSCAPE_LEFT:
-                            map.putString("orientation", "LANDSCAPE_LEFT");
+                            map.putString("orientation", "LANDSCAPE-LEFT");
                             sendEvent(context, "sensorOrientationChangeEvent", map);
                             break;
                         case UPSIDE_DOWN:
-                            map.putString("orientation", "UPSIDE_DOWN");
+                            map.putString("orientation", "PORTRAITUPSIDEDOWN");
                             sendEvent(context, "sensorOrientationChangeEvent", map);
                             break;
                         case LANDSCAPE_RIGHT:
-                            map.putString("orientation", "LANDSCAPE_RIGHT");
+                            map.putString("orientation", "LANDSCAPE-RIGHT");
                             sendEvent(context, "sensorOrientationChangeEvent", map);
                             break;
                     }
