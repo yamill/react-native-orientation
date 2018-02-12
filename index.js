@@ -1,5 +1,9 @@
 var Orientation = require('react-native').NativeModules.Orientation;
 var DeviceEventEmitter = require('react-native').DeviceEventEmitter;
+var NativeEventEmitter = require('react-native').NativeEventEmitter;
+var Platform = require('react-native').Platform;
+
+var OrientationEmitter = new NativeEventEmitter(Orientation);
 
 var listeners = {};
 var orientationDidChangeEvent = 'orientationDidChange';
@@ -56,11 +60,20 @@ module.exports = {
   },
 
   addOrientationListener(cb) {
-    var key = getKey(cb);
-    listeners[key] = DeviceEventEmitter.addListener(orientationDidChangeEvent,
-      (body) => {
-        cb(body.orientation);
-      });
+    if (Platform.OS === 'ios') {
+      var key = getKey(cb);
+
+      listeners[key] = OrientationEmitter.addListener(orientationDidChangeEvent,
+        (body) => {
+          cb(body.orientation);
+        });
+    } else {
+      var key = getKey(cb);
+      listeners[key] = DeviceEventEmitter.addListener(orientationDidChangeEvent,
+        (body) => {
+          cb(body.orientation);
+        });
+    }
   },
 
   removeOrientationListener(cb) {
@@ -75,12 +88,21 @@ module.exports = {
   },
 
   addSpecificOrientationListener(cb) {
-    var key = getKey(cb);
+    if (Platform.OS === 'ios') {
+      var key = getKey(cb);
 
-    listeners[key] = DeviceEventEmitter.addListener(specificOrientationDidChangeEvent,
-      (body) => {
-        cb(body.specificOrientation);
-      });
+      listeners[key] = OrientationEmitter.addListener(specificOrientationDidChangeEvent,
+        (body) => {
+          cb(body.orientation);
+        });
+    } else {
+      var key = getKey(cb);
+
+      listeners[key] = DeviceEventEmitter.addListener(specificOrientationDidChangeEvent,
+        (body) => {
+          cb(body.specificOrientation);
+        });
+    }
   },
 
   removeSpecificOrientationListener(cb) {
