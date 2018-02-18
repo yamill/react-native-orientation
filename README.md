@@ -136,7 +136,7 @@ export default class AppScreen extends Component {
     } else {
       // do something else
     }
-  },
+  }
 
   componentDidMount() {
     // this locks the view to Portrait Mode
@@ -149,7 +149,7 @@ export default class AppScreen extends Component {
     // Orientation.unlockAllOrientations();
 
     Orientation.addOrientationListener(this._orientationDidChange);
-  },
+  }
 
   _orientationDidChange = (orientation) => {
     if (orientation === 'LANDSCAPE') {
@@ -157,7 +157,7 @@ export default class AppScreen extends Component {
     } else {
       // do something with portrait layout
     }
-  },
+  }
 
   componentWillUnmount() {
     Orientation.getOrientation((err, orientation) => {
