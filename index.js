@@ -63,6 +63,14 @@ module.exports = {
       });
   },
 
+  addSensorBaseOrientationListener(cb) {
+    var key = getKey(cb);
+    listeners[key] = DeviceEventEmitter.addListener("sensorOrientationChangeEvent",
+      (body) => {
+        cb(body.orientation);
+      });
+  },
+
   removeOrientationListener(cb) {
     var key = getKey(cb);
 
