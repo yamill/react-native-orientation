@@ -27,13 +27,14 @@ import javax.annotation.Nullable;
 
 public class OrientationModule extends ReactContextBaseJavaModule implements LifecycleEventListener{
     final BroadcastReceiver receiver;
+    final private ReactApplicationContext ctx;
     private static final int ORIENTATION_0 = 0;
     private static final int ORIENTATION_90 = 3;
     private static final int ORIENTATION_270 = 1;
 
     public OrientationModule(ReactApplicationContext reactContext) {
         super(reactContext);
-        final ReactApplicationContext ctx = reactContext;
+        ctx = reactContext;
 
         receiver = new BroadcastReceiver() {
             @Override
@@ -75,8 +76,8 @@ public class OrientationModule extends ReactContextBaseJavaModule implements Lif
     
     @ReactMethod
     public void getSpecificOrientation(Callback callback) {
-        Display display = ((WindowManager)
-                mReactContext.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        android.view.Display display = ((android.view.WindowManager)
+                ctx.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         int screenOrientation = display.getRotation();
         String specifOrientationValue = getSpecificOrientationString(screenOrientation);
 
