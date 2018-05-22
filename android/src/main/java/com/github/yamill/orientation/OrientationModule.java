@@ -27,10 +27,14 @@ import javax.annotation.Nullable;
 
 public class OrientationModule extends ReactContextBaseJavaModule implements LifecycleEventListener{
     final BroadcastReceiver receiver;
+    final private ReactApplicationContext ctx;
+    private static final int ORIENTATION_0 = 0;
+    private static final int ORIENTATION_90 = 3;
+    private static final int ORIENTATION_270 = 1;
 
     public OrientationModule(ReactApplicationContext reactContext) {
         super(reactContext);
-        final ReactApplicationContext ctx = reactContext;
+        ctx = reactContext;
 
         receiver = new BroadcastReceiver() {
             @Override
@@ -67,6 +71,20 @@ public class OrientationModule extends ReactContextBaseJavaModule implements Lif
             callback.invoke(orientationInt, null);
         } else {
             callback.invoke(null, orientation);
+        }
+    }
+    
+    @ReactMethod
+    public void getSpecificOrientation(Callback callback) {
+        android.view.Display display = ((android.view.WindowManager)
+                ctx.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        int screenOrientation = display.getRotation();
+        String specifOrientationValue = getSpecificOrientationString(screenOrientation);
+
+        if (specifOrientationValue == "null") {
+            callback.invoke(screenOrientation, null);
+        } else {
+            callback.invoke(null, specifOrientationValue);
         }
     }
 
@@ -140,6 +158,24 @@ public class OrientationModule extends ReactContextBaseJavaModule implements Lif
         } else {
             return "null";
         }
+    }
+    
+    private String getSpecificOrientationString(int screenOrientation) {
+        String specifOrientationValue = "UNKNOWN";
+        switch (screenOrientation)
+        {
+            default:
+            case ORIENTATION_0: // Portrait
+                specifOrientationValue = "PORTRAIT";
+                break;
+            case ORIENTATION_90: // Landscape right
+                specifOrientationValue = "LANDSCAPE-RIGHT";
+                break;
+            case ORIENTATION_270: // Landscape left
+                specifOrientationValue = "LANDSCAPE-LEFT";
+                break;
+        }
+        return specifOrientationValue;
     }
 
     @Override
