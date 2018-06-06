@@ -27,6 +27,7 @@ import javax.annotation.Nullable;
 
 public class OrientationModule extends ReactContextBaseJavaModule implements LifecycleEventListener{
     final BroadcastReceiver receiver;
+    protected int orientationOnAppPause = -1;
 
     public OrientationModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -38,18 +39,23 @@ public class OrientationModule extends ReactContextBaseJavaModule implements Lif
                 Configuration newConfig = intent.getParcelableExtra("newConfig");
                 Log.d("receiver", String.valueOf(newConfig.orientation));
 
-                String orientationValue = newConfig.orientation == 1 ? "PORTRAIT" : "LANDSCAPE";
+                sendOrientationDidChangeEvent(ctx, newConfig.orientation);
 
-                WritableMap params = Arguments.createMap();
-                params.putString("orientation", orientationValue);
-                if (ctx.hasActiveCatalystInstance()) {
-                    ctx
-                    .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                    .emit("orientationDidChange", params);
-                }
             }
         };
         ctx.addLifecycleEventListener(this);
+    }
+
+    protected void sendOrientationDidChangeEvent(ReactApplicationContext ctx, int newOrientation) {
+        String orientationValue = newOrientation == 1 ? "PORTRAIT" : "LANDSCAPE";
+
+        WritableMap params = Arguments.createMap();
+        params.putString("orientation", orientationValue);
+        if (ctx.hasActiveCatalystInstance()) {
+            ctx
+                .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                .emit("orientationDidChange", params);
+        }
     }
 
     @Override
@@ -151,6 +157,16 @@ public class OrientationModule extends ReactContextBaseJavaModule implements Lif
             return;
         }
         activity.registerReceiver(receiver, new IntentFilter("onConfigurationChanged"));
+
+        ReactApplicationContext ctx = getReactApplicationContext();
+        if (ctx != null) {
+            int orientationOnResume = ctx.getResources().getConfiguration().orientation;
+
+            if (orientationOnAppPause != -1 && orientationOnAppPause != orientationOnResume) {
+                // The app launched with a different orientation
+                sendOrientationDidChangeEvent(ctx, orientationOnResume);
+            }
+        }
     }
     @Override
     public void onHostPause() {
@@ -158,6 +174,7 @@ public class OrientationModule extends ReactContextBaseJavaModule implements Lif
         if (activity == null) return;
         try
         {
+            orientationOnAppPause = getReactApplicationContext().getResources().getConfiguration().orientation;
             activity.unregisterReceiver(receiver);
         }
         catch (java.lang.IllegalArgumentException e) {
