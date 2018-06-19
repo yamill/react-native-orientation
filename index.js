@@ -1,5 +1,6 @@
 var Orientation = require('react-native').NativeModules.Orientation;
 var DeviceEventEmitter = require('react-native').DeviceEventEmitter;
+var Platform = require('react-native').Platform;
 
 var listeners = {};
 var orientationDidChangeEvent = 'orientationDidChange';
@@ -25,6 +26,17 @@ function getKey(listener) {
 module.exports = {
   getOrientation(cb) {
     Orientation.getOrientation((error,orientation) =>{
+      cb(error, orientation);
+    });
+  },
+
+  isOrientationLockedBySystem(cb) {
+    if (Platform.OS === 'ios') {
+      console.log('This method is not implemented on iOS.');
+      return;
+    }
+
+    Orientation.isOrientationLockedBySystem((error,orientation) =>{
       cb(error, orientation);
     });
   },

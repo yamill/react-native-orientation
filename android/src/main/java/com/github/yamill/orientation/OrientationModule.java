@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.provider.Settings;
 import android.util.Log;
 
 import com.facebook.common.logging.FLog;
@@ -67,6 +68,21 @@ public class OrientationModule extends ReactContextBaseJavaModule implements Lif
             callback.invoke(orientationInt, null);
         } else {
             callback.invoke(null, orientation);
+        }
+    }
+
+    @ReactMethod
+    public void isOrientationLockedBySystem(Callback callback) {
+        try {
+            if (Settings.System.getInt(
+                    getReactApplicationContext().getContentResolver(), Settings.System.ACCELEROMETER_ROTATION
+                ) == 1) {
+                callback.invoke(null, false);
+            } else {
+                callback.invoke(null, true);
+            };
+        } catch (Settings.SettingNotFoundException e) {
+            callback.invoke(e, null);
         }
     }
 
