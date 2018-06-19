@@ -1,6 +1,6 @@
 {
-  "name": "react-native-orientation",
-  "version": "3.1.3",
+  "name": "@mls-digital/react-native-orientation",
+  "version": "3.1.4",
   "description": "Listen to device orientation changes in React Native applications and programmatically set preferred orientations on a per screen basis",
   "main": "index.js",
   "scripts": {
