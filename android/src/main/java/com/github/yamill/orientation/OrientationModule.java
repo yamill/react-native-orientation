@@ -127,6 +127,8 @@ public class OrientationModule extends ReactContextBaseJavaModule implements Lif
             constants.put("initialOrientation", orientation);
         }
 
+        constants.put("initialSpecificOrientation", null);
+
         return constants;
     }
 
