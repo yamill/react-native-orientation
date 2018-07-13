@@ -12,6 +12,8 @@
 @implementation Orientation
 @synthesize bridge = _bridge;
 
+NSString* lastKnownSpecificOrientation;
+
 static UIInterfaceOrientationMask _orientation = UIInterfaceOrientationMaskAllButUpsideDown;
 + (void)setOrientation: (UIInterfaceOrientationMask)orientation {
   _orientation = orientation;
@@ -96,18 +98,22 @@ static UIInterfaceOrientationMask _orientation = UIInterfaceOrientationMaskAllBu
   switch (orientation) {
     case UIDeviceOrientationPortrait:
       orientationStr = @"PORTRAIT";
+      lastKnownSpecificOrientation = orientationStr;
       break;
 
     case UIDeviceOrientationLandscapeLeft:
       orientationStr = @"LANDSCAPE-LEFT";
+      lastKnownSpecificOrientation = orientationStr;
       break;
 
     case UIDeviceOrientationLandscapeRight:
       orientationStr = @"LANDSCAPE-RIGHT";
+      lastKnownSpecificOrientation = orientationStr;
       break;
 
     case UIDeviceOrientationPortraitUpsideDown:
       orientationStr = @"PORTRAITUPSIDEDOWN";
+      lastKnownSpecificOrientation = orientationStr;
       break;
 
     default:
@@ -169,16 +175,13 @@ RCT_EXPORT_METHOD(lockToLandscape)
   #if DEBUG
     NSLog(@"Locked to Landscape");
   #endif
-  UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
-  NSString *orientationStr = [self getSpecificOrientationStr:orientation];
-  if ([orientationStr isEqualToString:@"LANDSCAPE-LEFT"]) {
-    [Orientation setOrientation:UIInterfaceOrientationMaskLandscape];
+  [Orientation setOrientation:UIInterfaceOrientationMaskLandscape];
+  if ([lastKnownSpecificOrientation isEqualToString:@"LANDSCAPE-LEFT"]) {
     [[NSOperationQueue mainQueue] addOperationWithBlock:^ {
       [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
       [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger: UIInterfaceOrientationLandscapeRight] forKey:@"orientation"];
     }];
   } else {
-    [Orientation setOrientation:UIInterfaceOrientationMaskLandscape];
     [[NSOperationQueue mainQueue] addOperationWithBlock:^ {
       [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
       [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger: UIInterfaceOrientationLandscapeLeft] forKey:@"orientation"];
