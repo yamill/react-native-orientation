@@ -5,16 +5,22 @@ def _ext = rootProject.ext
 /* 
     If you want to change this properties, just put them on your android/buil.gradle like this:
 
-    ...
+    buildscript {
+        ...
+    }
+
+    ext {
+        versionCode = 13
+        versionName = "1.9.3"
+        compileSdkVersion = 26
+        minSdkVersion = 16
+        targetSdkVersion = 23
+        buildToolsVersion = "26.0.2"
+        supportLibVersion = "26.0.2"
+        googlePlayServicesVersion = "11.4.2"
+    }
+
     allprojects {
-        project.ext {
-            compileSdkVersion = YOUR_COMPILE_SDK_VERSION
-            buildToolsVersion = YOUR_BUILD_TOOLS_VERSION
-            minSdkVersion = YOUR_SDK_VERSION
-            targetSdkVersion = YOUR_TARGET_SDK_VERSION
-            versionCode = YOUR_VERSION_CODE
-            versionName = YOUR_VERSION_NAME
-        }
         ...
     }
 */
