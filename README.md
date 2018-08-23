@@ -83,6 +83,14 @@ Add the following to your project's `AppDelegate.m`:
   // ...
 
 - (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+
+
+  // this loop is used to prevent repainting of view before rotation is complete
+  while ([[UIDevice currentDevice] isGeneratingDeviceOrientationNotifications]) {
+        [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
+  }
+  
+  
   return [Orientation getOrientation];
 }
   
