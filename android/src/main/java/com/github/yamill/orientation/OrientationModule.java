@@ -39,28 +39,33 @@ public class OrientationModule extends ReactContextBaseJavaModule implements Lif
         final OrientationEventListener specificOrientationListener = new OrientationEventListener(ctx) {
             @Override
             public void onOrientationChanged(int orientation) {
-                String specificOrientation = "UNKNOWN";
 
-                if (Math.abs(orientation) < SPECIFIC_ORIENTATION_OFFSET) {
-                    specificOrientation = "PORTRAIT";
-                } else if (Math.abs(orientation - 90) < SPECIFIC_ORIENTATION_OFFSET) {
-                    specificOrientation = "LANDSCAPE-RIGHT";
-                } else if (Math.abs(orientation - 180) < SPECIFIC_ORIENTATION_OFFSET) {
-                    specificOrientation = "PORTRAITUPSIDEDOWN";
-                } else if (Math.abs(orientation - 270) < SPECIFIC_ORIENTATION_OFFSET) {
-                    specificOrientation = "LANDSCAPE-LEFT";
-                } else if (Math.abs(orientation - 360) < SPECIFIC_ORIENTATION_OFFSET) {
-                    specificOrientation = "PORTRAIT";
-                }
+                Log.wtf("nichel", "orientation: " + orientation);
 
-                if (!specificOrientation.equals(currentSpecificOrientation)) {
-                    currentSpecificOrientation = specificOrientation;
+                if (orientation >= 0 && orientation <= 359) {
+                    String specificOrientation = "UNKNOWN";
 
-                    final WritableMap params = Arguments.createMap();
-                    params.putString("specificOrientation", specificOrientation);
+                    if (orientation >= 0 && orientation < 45) {
+                        specificOrientation = "PORTRAIT";
+                    } else if (orientation >= 45 && orientation < 135) {
+                        specificOrientation = "LANDSCAPE-RIGHT";
+                    } else if (orientation >= 135 && orientation < 225) {
+                        specificOrientation = "PORTRAITUPSIDEDOWN";
+                    } else if (orientation >= 225 && orientation < 315) {
+                        specificOrientation = "LANDSCAPE-LEFT";
+                    } else if (orientation >= 315 && orientation < 360) {
+                        specificOrientation = "PORTRAIT";
+                    }
 
-                    if (ctx.hasActiveCatalystInstance()) {
-                        ctx.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("specificOrientationDidChange", params);
+                    if (!specificOrientation.equals(currentSpecificOrientation)) {
+                        currentSpecificOrientation = specificOrientation;
+
+                        final WritableMap params = Arguments.createMap();
+                        params.putString("specificOrientation", specificOrientation);
+
+                        if (ctx.hasActiveCatalystInstance()) {
+                            ctx.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("specificOrientationDidChange", params);
+                        }
                     }
                 }
             }
