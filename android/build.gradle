@@ -1,17 +1,24 @@
+
 apply plugin: 'com.android.library'
 
+def _ext = rootProject.ext
+
+def _compileSdkVersion = _ext.has('compileSdkVersion') ? _ext.compileSdkVersion : 26
+def _buildToolsVersion = _ext.has('buildToolsVersion') ? _ext.buildToolsVersion : '26.0.3'
+def _minSdkVersion = _ext.has('minSdkVersion') ? _ext.minSdkVersion : 16
+def _targetSdkVersion = _ext.has('targetSdkVersion') ? _ext.targetSdkVersion : 26
+
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    compileSdkVersion _compileSdkVersion
+    buildToolsVersion _buildToolsVersion
 
     defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 22
-        versionCode 1
-        versionName "1.0"
-        ndk {
-            abiFilters "armeabi-v7a", "x86"
-        }
+        minSdkVersion _minSdkVersion
+        targetSdkVersion _targetSdkVersion
+    }
+
+    lintOptions {
+        abortOnError false
     }
 }
 
