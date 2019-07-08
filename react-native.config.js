@@ -6,5 +6,5 @@ module.exports = {
         android: {
             "packageInstance": "new OrientationPackage()"
         }
-    },
+    }
 };
