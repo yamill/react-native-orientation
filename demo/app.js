@@ -23,15 +23,15 @@ export default class Demo extends Component {
   }
 
   _getOrientation() {
-    Orientation.getOrientation((err, orientation) => {
-      Alert.alert(`Orientation is ${orientation}`);
-    });
+    Orientation.getOrientation().then(orientation =>
+      Alert.alert(`Orientation is ${orientation}`)
+    );
   }
 
   _getSpecificOrientation() {
-    Orientation.getSpecificOrientation((err, orientation) => {
-      Alert.alert(`Specific orientation is ${orientation}`);
-    });
+    Orientation.getSpecificOrientation().then(orientation =>
+      Alert.alert(`Specific orientation is ${orientation}`)
+    );
   }
 
   _updateOrientation = (orientation) => this.setState({ orientation });

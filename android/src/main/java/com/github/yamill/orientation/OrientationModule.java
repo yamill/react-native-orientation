@@ -11,7 +11,6 @@ import android.util.Log;
 
 import com.facebook.common.logging.FLog;
 import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -19,6 +18,7 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.common.ReactConstants;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
+import com.facebook.react.bridge.Promise;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,6 +27,8 @@ import javax.annotation.Nullable;
 
 public class OrientationModule extends ReactContextBaseJavaModule implements LifecycleEventListener{
     final BroadcastReceiver receiver;
+    final String LANDSCAPE = "LANDSCAPE";
+    final String PORTRAIT = "PORTRAIT";
 
     public OrientationModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -38,7 +40,7 @@ public class OrientationModule extends ReactContextBaseJavaModule implements Lif
                 Configuration newConfig = intent.getParcelableExtra("newConfig");
                 Log.d("receiver", String.valueOf(newConfig.orientation));
 
-                String orientationValue = newConfig.orientation == 1 ? "PORTRAIT" : "LANDSCAPE";
+                String orientationValue = newConfig.orientation == 1 ? PORTRAIT : LANDSCAPE;
 
                 WritableMap params = Arguments.createMap();
                 params.putString("orientation", orientationValue);
@@ -58,16 +60,10 @@ public class OrientationModule extends ReactContextBaseJavaModule implements Lif
     }
 
     @ReactMethod
-    public void getOrientation(Callback callback) {
+    public void getOrientation(final Promise promise) {
         final int orientationInt = getReactApplicationContext().getResources().getConfiguration().orientation;
-
         String orientation = this.getOrientationString(orientationInt);
-
-        if (orientation == "null") {
-            callback.invoke(orientationInt, null);
-        } else {
-            callback.invoke(null, orientation);
-        }
+        promise.resolve(orientation);
     }
 
     @ReactMethod
@@ -127,14 +123,17 @@ public class OrientationModule extends ReactContextBaseJavaModule implements Lif
             constants.put("initialOrientation", orientation);
         }
 
+        constants.put("LANDSCAPE", LANDSCAPE);
+        constants.put("PORTRAIT", PORTRAIT);
+
         return constants;
     }
 
     private String getOrientationString(int orientation) {
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            return "LANDSCAPE";
+            return LANDSCAPE;
         } else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-            return "PORTRAIT";
+            return PORTRAIT;
         } else if (orientation == Configuration.ORIENTATION_UNDEFINED) {
             return "UNKNOWN";
         } else {

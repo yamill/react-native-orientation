@@ -160,7 +160,7 @@ export default class AppScreen extends Component {
   },
 
   componentWillUnmount() {
-    Orientation.getOrientation((err, orientation) => {
+    Orientation.getOrientation().then(orientation => {
       console.log(`Current Device Orientation: ${orientation}`);
     });
 
@@ -217,5 +217,7 @@ removeSpecificOrientationListener((specificOrientation) => {});
 - `lockToLandscapeLeft()`
 - `lockToLandscapeRight()`
 - `unlockAllOrientations()`
-- `getOrientation((err, orientation) => {})`
-- `getSpecificOrientation((err, specificOrientation) => {})`
+- `getOrientation().then(orientation => {})`
+- `getSpecificOrientation().then(orientation => {})` iOS only
+- `LANDSCAPE` constant
+- `PORTRAIT` constant
