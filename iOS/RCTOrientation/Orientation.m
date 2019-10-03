@@ -13,6 +13,8 @@
 @synthesize bridge = _bridge;
 
 static UIInterfaceOrientationMask _orientation = UIInterfaceOrientationMaskAllButUpsideDown;
+NSString *LANDSCAPE = @"LANDSCAPE";
+NSString *PORTRAIT = @"PORTRAIT";
 + (void)setOrientation: (UIInterfaceOrientationMask)orientation {
   _orientation = orientation;
 }
@@ -59,7 +61,7 @@ static UIInterfaceOrientationMask _orientation = UIInterfaceOrientationMaskAllBu
     case UIDeviceOrientationLandscapeLeft:
     case UIDeviceOrientationLandscapeRight:
 
-      orientationStr = @"LANDSCAPE";
+      orientationStr = LANDSCAPE;
       break;
 
     case UIDeviceOrientationPortraitUpsideDown:
@@ -75,7 +77,7 @@ static UIInterfaceOrientationMask _orientation = UIInterfaceOrientationMaskAllBu
         case UIInterfaceOrientationLandscapeLeft:
         case UIInterfaceOrientationLandscapeRight:
 
-          orientationStr = @"LANDSCAPE";
+          orientationStr = LANDSCAPE;
           break;
 
         case UIInterfaceOrientationPortraitUpsideDown:
@@ -119,7 +121,7 @@ static UIInterfaceOrientationMask _orientation = UIInterfaceOrientationMaskAllBu
         case UIInterfaceOrientationLandscapeLeft:
         case UIInterfaceOrientationLandscapeRight:
 
-          orientationStr = @"LANDSCAPE";
+          orientationStr = LANDSCAPE;
           break;
 
         case UIInterfaceOrientationPortraitUpsideDown:
@@ -137,18 +139,20 @@ static UIInterfaceOrientationMask _orientation = UIInterfaceOrientationMaskAllBu
 
 RCT_EXPORT_MODULE();
 
-RCT_EXPORT_METHOD(getOrientation:(RCTResponseSenderBlock)callback)
+RCT_REMAP_METHOD(getOrientation,
+ findEventsWithResolver:(RCTPromiseResolveBlock)resolve
 {
   UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
   NSString *orientationStr = [self getOrientationStr:orientation];
-  callback(@[[NSNull null], orientationStr]);
+  resolve(orientationStr);
 }
 
-RCT_EXPORT_METHOD(getSpecificOrientation:(RCTResponseSenderBlock)callback)
+RCT_REMAP_METHOD(getSpecificOrientation,
+ findEventsWithResolver:(RCTPromiseResolveBlock)resolve
 {
   UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
   NSString *orientationStr = [self getSpecificOrientationStr:orientation];
-  callback(@[[NSNull null], orientationStr]);
+  resolve(orientationStr);
 }
 
 RCT_EXPORT_METHOD(lockToPortrait)
@@ -230,7 +234,9 @@ RCT_EXPORT_METHOD(unlockAllOrientations)
   NSString *orientationStr = [self getOrientationStr:orientation];
 
   return @{
-    @"initialOrientation": orientationStr
+    @"initialOrientation": orientationStr,
+    @"PORTRAIT": PORTRAIT,
+    @"LANDSCAPE": LANDSCAPE
   };
 }
 
