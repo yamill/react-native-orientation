@@ -73,6 +73,13 @@ module.exports = {
     listeners[key].remove();
     listeners[key] = null;
   },
+  
+  removeAllListeners() {
+    for (key in listeners) {
+      listeners[key].remove;
+      delete listeners[key];
+    }
+  },
 
   addSpecificOrientationListener(cb) {
     var key = getKey(cb);
