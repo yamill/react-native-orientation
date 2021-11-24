@@ -13,6 +13,10 @@ declare module "react-native-orientation" {
         static addSpecificOrientationListener(handler: (orientation: OrientationType) => void): void;
 
         static removeSpecificOrientationListener(handler: (orientation: OrientationType) => void): void;
+
+        static getInitialOrientation(): OrientationType
+
+        static addOrientationListener(handler: (v: OrientationType) => void): void
     }
 
     export default Orientation;
