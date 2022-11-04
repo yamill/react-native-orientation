@@ -1,4 +1,5 @@
 var Orientation = require('react-native').NativeModules.Orientation;
+var Platform = require('react-native').Platform;
 var DeviceEventEmitter = require('react-native').DeviceEventEmitter;
 
 var listeners = {};
@@ -33,6 +34,12 @@ module.exports = {
     Orientation.getSpecificOrientation((error,orientation) =>{
       cb(error, orientation);
     });
+  },
+
+  ignoreAutoRotate(shouldIgnore) {
+    if (Platform.OS === 'android') {
+      Orientation.ignoreAutoRotate(shouldIgnore);
+    }
   },
 
   lockToPortrait() {
