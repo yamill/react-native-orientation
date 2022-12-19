@@ -19,7 +19,6 @@ static UIInterfaceOrientationMask _orientation = UIInterfaceOrientationMaskAllBu
   _orientation = orientation;
 }
 + (UIInterfaceOrientationMask)getOrientation {
-    NSLog(@"***** Orientation is: %d", _orientation);
   return _orientation;
 }
 
